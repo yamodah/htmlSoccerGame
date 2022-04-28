@@ -4,7 +4,7 @@ const ctx = canvas.getContext("2d");
 canvas.width = 1024;
 canvas.height = 576;
 const gravity = 0.7;
-const friction = 0.89;
+const friction = 0.825;
 const keys = {
   a: {
     pressed: false,
@@ -95,13 +95,14 @@ function animate() {
   //player 1 circle detection
   if (rectangleCircleCollison({ circle: ball, rectangle: player1 })) {
     //right side
+    randomFactor = Math.random();
     if (ball.position.x - ball.radius * 2 >= player1.position.x) {
       ball.velocity.x = 12;
-      ball.velocity.y = -10;
+      ball.velocity.y = randomFactor > 0.5 ? -12 : -20;
       //left side
-    } else if (ball.position.x <= player1.position.x) {
+    } else {
       ball.velocity.x = -12;
-      ball.velocity.y = -10;
+      ball.velocity.y = randomFactor > 0.5 ? -12 : -2;
     }
   }
 
@@ -112,7 +113,7 @@ function animate() {
       ball.velocity.x = 12;
       ball.velocity.y = -10;
       //left side
-    } else if (ball.position.x <= player2.position.x) {
+    } else {
       ball.velocity.x = -12;
       ball.velocity.y = -10;
     }
@@ -120,6 +121,11 @@ function animate() {
   //Score Detection
   //player 1 goal
   if (
+    rectangleCircleCollison({ circle: ball, rectangle: rightGoal }) &&
+    ball.position.y <= leftGoal.height
+  ) {
+    ball.velocity.y = -10;
+  } else if (
     rectangleCircleCollison({ circle: ball, rectangle: leftGoal }) &&
     ball.position.x - ball.radius * 2 < leftGoal.position.x
   ) {
@@ -131,6 +137,11 @@ function animate() {
   //player 2 goal
   if (
     rectangleCircleCollison({ circle: ball, rectangle: rightGoal }) &&
+    ball.position.y <= rightGoal.height
+  ) {
+    ball.velocity.y = -10;
+  } else if (
+    rectangleCircleCollison({ circle: ball, rectangle: rightGoal }) &&
     ball.position.x > rightGoal.position.x + (ball.radius + 5)
   ) {
     console.log("player 1 scored");
@@ -140,17 +151,26 @@ function animate() {
 
   //bump collision
 
-  if (rectangularCollision({ rectangle1: player1, rectangle2: player2 })&& player1.position.x<player2.position.x) {
-    player1.velocity.x = -20
-    player2.velocity.x = 20
-    console.log("touching")
-  }else if(rectangularCollision({rectangle1:player1, rectangle2:player2})&& player2.position.x<player1.position.x){
-    player1.velocity.x = 20
-    player2.velocity.x = -20
+  if (
+    rectangularCollision({ rectangle1: player1, rectangle2: player2 }) &&
+    player1.position.x < player2.position.x
+  ) {
+    player1.velocity.x = -20;
+    player2.velocity.x = 20;
+    console.log("touching");
+  } else if (
+    rectangularCollision({ rectangle1: player1, rectangle2: player2 }) &&
+    player2.position.x < player1.position.x
+  ) {
+    player1.velocity.x = 20;
+    player2.velocity.x = -20;
   }
-  if(ball.position.x-ball.radius>canvas.width || ball.position.x+ball.radius <0){
-      console.log("out")
-      resetAfterScore()
+  if (
+    ball.position.x - ball.radius > canvas.width ||
+    ball.position.x + ball.radius < 0
+  ) {
+    console.log("out");
+    resetAfterScore();
   }
 }
 animate();
