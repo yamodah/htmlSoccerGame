@@ -7,6 +7,8 @@ const restartButton = document.querySelector("#restartGame");
 const goalNotification = document.querySelector("#goal");
 const goalAnimation = document.querySelector(".goal");
 
+
+
 canvas.width = 1200;
 canvas.height = 576;
 const gravity = 0.7;
@@ -47,15 +49,14 @@ const rightGoal = new Goal(
 );
 
 function resetAfterScore() {
-
-    ball.position = { x: canvas.width / 2, y: canvas.height - 30 };
-    ball.velocity = { x: 0, y: -20 };
-    player1.position = { x: 100, y: 0 };
-    player1.velocity = { x: 0, y: 0 };
-    player1.lastKey = null;
-    player2.position = { x: canvas.width - 175, y: 0 };
-    player2.velocity = { x: 0, y: 0 };
-    player2.lastKey = null;
+  ball.position = { x: canvas.width / 2, y: canvas.height - 30 };
+  ball.velocity = { x: 0, y: -20 };
+  player1.position = { x: 100, y: 0 };
+  player1.velocity = { x: 0, y: 0 };
+  player1.lastKey = null;
+  player2.position = { x: canvas.width - 175, y: 0 };
+  player2.velocity = { x: 0, y: 0 };
+  player2.lastKey = null;
 }
 
 let gameState;
@@ -81,21 +82,43 @@ function animate() {
     } else {
       player1.velocity.x = 0;
     }
-    if (
-      keys.ArrowLeft.pressed &&
-      player2.lastKey === "ArrowLeft" &&
-      player2.position.x >= 0
-    ) {
-      player2.velocity.x = -10;
-    } else if (
-      keys.ArrowRight.pressed &&
-      player2.lastKey === "ArrowRight" &&
-      player2.position.x + player2.width <= canvas.width
-    ) {
-      player2.velocity.x = 10;
-    } else {
-      player2.velocity.x = 0;
+    if (gameState === "play") {
+      if (
+        ball.position.x > canvas.width / 2 &&
+        ball.position.x < player2.position.x - player2.width
+      ) {
+        player2.velocity.x = -10;
+      } else if (
+        ball.position.x >= canvas.width / 2 &&
+        ball.position.x > player2.position.x
+      ) {
+        player2.velocity.x = 10;
+      } else {
+        player2.velocity.x = 0;
+      }
+      if (
+        ball.position.y <= player2.position.y &&
+        ball.velocity.x > 0 &&
+        ball.position.x > canvas.width / 2 + player2.width
+      ) {
+        player2.velocity.y = -20;
+      }
     }
+    // if (
+    //   keys.ArrowLeft.pressed &&
+    //   player2.lastKey === "ArrowLeft" &&
+    //   player2.position.x >= 0
+    // ) {
+    //   player2.velocity.x = -10;
+    // } else if (
+    //   keys.ArrowRight.pressed &&
+    //   player2.lastKey === "ArrowRight" &&
+    //   player2.position.x + player2.width <= canvas.width
+    // ) {
+    //   player2.velocity.x = 10;
+    // } else {
+    //   player2.velocity.x = 0;
+    // }
   }
 
   //Circle collision detection
@@ -141,7 +164,6 @@ function animate() {
   ) {
     ball.velocity.y = randomFactor > 0.5 ? highBall : lowBall;
     ball.velocity.x = -ball.velocity.x;
-
   } else if (
     rectangleCircleCollison({ circle: ball, rectangle: leftGoal }) &&
     ball.position.x - ball.radius * 2 < leftGoal.position.x
@@ -159,8 +181,6 @@ function animate() {
   ) {
     ball.velocity.y = randomFactor > 0.5 ? highBall : lowBall;
     ball.velocity.x = -ball.velocity.x;
-
-
   } else if (
     rectangleCircleCollison({ circle: ball, rectangle: rightGoal }) &&
     ball.position.x > rightGoal.position.x + (ball.radius + 5)
@@ -206,8 +226,8 @@ restartButton.addEventListener("click", () => {
   location.reload();
 });
 goalAnimation.addEventListener("animationend", () => {
-    goalNotification.style.display = "none";
-    goalNotification.classList.remove("goal");
+  goalNotification.style.display = "none";
+  goalNotification.classList.remove("goal");
   console.log("end");
 });
 window.addEventListener("keydown", (event) => {
