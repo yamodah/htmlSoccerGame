@@ -69,7 +69,7 @@ function animate() {
   } else if (
     keys.d.pressed &&
     player1.lastKey === "d" &&
-    player1.position.x+player1.width <= canvas.width
+    player1.position.x + player1.width <= canvas.width
   ) {
     player1.velocity.x = 8;
   } else {
@@ -84,7 +84,7 @@ function animate() {
   } else if (
     keys.ArrowRight.pressed &&
     player2.lastKey === "ArrowRight" &&
-    player2.position.x+player2.width <= canvas.width
+    player2.position.x + player2.width <= canvas.width
   ) {
     player2.velocity.x = 8;
   } else {
@@ -119,23 +119,38 @@ function animate() {
   }
   //Score Detection
   //player 1 goal
-  if (
-    rectangleCircleCollison({ circle: ball, rectangle: leftGoal }) &&
-    ball.position.x - ball.radius * 2 < leftGoal.position.x
-  ) {
-    console.log("player 2 scored");
-    // cancelAnimationFrame(animationId);
-    resetAfterScore();
-  }
+//   if (
+//     rectangleCircleCollison({ circle: ball, rectangle: leftGoal }) &&
+//     ball.position.x - ball.radius * 2 < leftGoal.position.x
+//   ) {
+//     console.log("player 2 scored");
+//     // cancelAnimationFrame(animationId);
+//     resetAfterScore();
+//   }
 
   //player 2 goal
-  if (
-    rectangleCircleCollison({ circle: ball, rectangle: rightGoal }) &&
-    ball.position.x > rightGoal.position.x + (ball.radius + 5)
-  ) {
-    console.log("player 1 scored");
-    // cancelAnimationFrame(animationId);
-    resetAfterScore();
+//   if (
+//     rectangleCircleCollison({ circle: ball, rectangle: rightGoal }) &&
+//     ball.position.x > rightGoal.position.x + (ball.radius + 5)
+//   ) {
+//     console.log("player 1 scored");
+//     // cancelAnimationFrame(animationId);
+//     resetAfterScore();
+//   }
+
+  //bump collision
+
+  if (rectangularCollision({ rectangle1: player1, rectangle2: player2 })&& player1.position.x<player2.position.x) {
+    player1.velocity.x = -50
+    player2.velocity.x = 50
+    console.log("touching")
+  }else if(rectangularCollision({rectangle1:player1, rectangle2:player2})&& player2.position.x<player1.position.x){
+    player1.velocity.x = 50
+    player2.velocity.x = -50
+  }
+  if(ball.position.x-ball.radius>canvas.width || ball.position.x+ball.radius <0){
+      console.log("out")
+      resetAfterScore()
   }
 }
 animate();
