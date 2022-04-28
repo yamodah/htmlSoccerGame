@@ -13,6 +13,19 @@
             box-sizing: border-box;
             font-family: 'Press Start 2P', cursive;
         }
+        @keyframes goalScroll {
+          from{
+            background-color: white;
+          }
+          to{
+            background-color: black;
+          }
+        }
+        .goalScroll{
+          animation-duration: 2s;
+          animation-iteration-count: 1;
+          animation-name: goalScroll;
+        }
     </style>
   </head>
   <body>
@@ -47,7 +60,7 @@
           <h1>-</h1>
           <h1 id="player2Score" style="padding-left: 10px">0</h1>
         </div>
-        <h1 style="color: white;">GOOOAAALLLL</h1>
+        <h1 id="goal" style="color: white; display: none;">GOOOAAALLLL</h1>
       </div>
       <div
         id="result"
