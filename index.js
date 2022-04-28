@@ -57,9 +57,6 @@ function resetAfterScore() {
     player2.velocity = { x: 0, y: 0 };
     player2.lastKey = null;
     gameState = "goal"
-    setTimeout(()=>{
-        gameState="play"
-    }, 1000)
 }
 
 let gameState;
@@ -210,6 +207,7 @@ restartButton.addEventListener("click", () => {
 goalAnimation.addEventListener("animationend", () => {
   goalNotification.style.display = "none";
   goalNotification.classList.remove("goal");
+  gameState="play"
   console.log("end");
 });
 window.addEventListener("keydown", (event) => {
