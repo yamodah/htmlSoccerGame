@@ -41,6 +41,7 @@ const rightGoal = new Goal(
   100,
   "green"
 );
+
 function resetAfterScore() {
   setTimeout(() => {
     ball.position = { x: canvas.width / 2, y: canvas.height - 30 };
@@ -53,6 +54,7 @@ function resetAfterScore() {
     player2.lastKey = null;
   }, 0);
 }
+
 let animationId;
 function animate() {
   animationId = requestAnimationFrame(animate);
@@ -157,8 +159,7 @@ function animate() {
     resetAfterScore();
   }
 
-  //bump collision
-
+  //player vs player bump collision
   if (
     rectangularCollision({ rectangle1: player1, rectangle2: player2 }) &&
     player1.position.x < player2.position.x
@@ -173,7 +174,8 @@ function animate() {
     player1.velocity.x = 20;
     player2.velocity.x = -20;
   }
-  
+
+  //out of bounds logic
   if (
     ball.position.x - ball.radius > canvas.width ||
     ball.position.x + ball.radius < 0
