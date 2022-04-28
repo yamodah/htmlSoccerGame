@@ -1,7 +1,7 @@
 const canvas = document.querySelector("canvas");
 const ctx = canvas.getContext("2d");
 
-canvas.width = 1024;
+canvas.width = 1200;
 canvas.height = 576;
 const gravity = 0.7;
 const friction = 0.825;
@@ -29,7 +29,7 @@ const keys = {
 const player1 = new Player({ x: 100, y: 0 }, 75, 150, "blue");
 const player2 = new Player({ x: canvas.width - 175, y: 0 }, 75, 150, "red");
 const ball = new Ball(
-  { x: canvas.width / 2, y: canvas.height - 30 },
+  { x: canvas.width / 2, y: 0 },
   30,
   "white",
   { x: 0, y: 0 }
@@ -65,13 +65,13 @@ function animate() {
   ball.update();
 
   if (keys.a.pressed && player1.lastKey === "a" && player1.position.x >= 0) {
-    player1.velocity.x = -8;
+    player1.velocity.x = -10;
   } else if (
     keys.d.pressed &&
     player1.lastKey === "d" &&
     player1.position.x + player1.width <= canvas.width
   ) {
-    player1.velocity.x = 8;
+    player1.velocity.x = 10;
   } else {
     player1.velocity.x = 0;
   }
@@ -80,29 +80,36 @@ function animate() {
     player2.lastKey === "ArrowLeft" &&
     player2.position.x >= 0
   ) {
-    player2.velocity.x = -8;
+    player2.velocity.x = -10;
   } else if (
     keys.ArrowRight.pressed &&
     player2.lastKey === "ArrowRight" &&
     player2.position.x + player2.width <= canvas.width
   ) {
-    player2.velocity.x = 8;
+    player2.velocity.x = 10;
   } else {
     player2.velocity.x = 0;
   }
 
   //Circle collision detection
+
+  //creating randomness in ball movement
+  const randomFactor = Math.random();
+  const highBall = -(Math.random() * (20 - 12) + 12);
+  const lowBall = -(Math.random() * (12 - 5) + 5);
+  const fastBall = Math.random() * (20 - 15) + 15;
+  const slowBall = Math.random() * (15 - 10) + 10;
+
   //player 1 circle detection
   if (rectangleCircleCollison({ circle: ball, rectangle: player1 })) {
     //right side
-    randomFactor = Math.random();
     if (ball.position.x - ball.radius * 2 >= player1.position.x) {
-      ball.velocity.x = 12;
-      ball.velocity.y = randomFactor > 0.5 ? -12 : -20;
+      ball.velocity.x = randomFactor > 0.5 ? fastBall : slowBall;
+      ball.velocity.y = randomFactor > 0.5 ? highBall : lowBall;
       //left side
     } else {
-      ball.velocity.x = -12;
-      ball.velocity.y = randomFactor > 0.5 ? -12 : -2;
+      ball.velocity.x = randomFactor > 0.5 ? -fastBall : -slowBall;
+      ball.velocity.y = randomFactor > 0.5 ? highBall : lowBall;
     }
   }
 
@@ -110,27 +117,28 @@ function animate() {
   if (rectangleCircleCollison({ circle: ball, rectangle: player2 })) {
     //right side
     if (ball.position.x - ball.radius * 2 >= player2.position.x) {
-      ball.velocity.x = 12;
-      ball.velocity.y = -10;
+      ball.velocity.x = randomFactor > 0.5 ? fastBall : slowBall;
+      ball.velocity.y = randomFactor > 0.5 ? highBall : lowBall;
       //left side
     } else {
-      ball.velocity.x = -12;
-      ball.velocity.y = -10;
+      ball.velocity.x = randomFactor > 0.5 ? -fastBall : -slowBall;
+      ball.velocity.y = randomFactor > 0.5 ? highBall : lowBall;
     }
   }
+
   //Score Detection
   //player 1 goal
   if (
     rectangleCircleCollison({ circle: ball, rectangle: rightGoal }) &&
     ball.position.y <= leftGoal.height
   ) {
-    ball.velocity.y = -10;
+    ball.velocity.y = randomFactor>0.5?highBall:lowBall;
+    ball.velocity.x = -ball.velocity.x
   } else if (
     rectangleCircleCollison({ circle: ball, rectangle: leftGoal }) &&
     ball.position.x - ball.radius * 2 < leftGoal.position.x
   ) {
     console.log("player 2 scored");
-    // cancelAnimationFrame(animationId);
     resetAfterScore();
   }
 
@@ -139,13 +147,13 @@ function animate() {
     rectangleCircleCollison({ circle: ball, rectangle: rightGoal }) &&
     ball.position.y <= rightGoal.height
   ) {
-    ball.velocity.y = -10;
+    ball.velocity.y = randomFactor>0.5?highBall:lowBall;
+    ball.velocity.x = -ball.velocity.x
   } else if (
     rectangleCircleCollison({ circle: ball, rectangle: rightGoal }) &&
     ball.position.x > rightGoal.position.x + (ball.radius + 5)
   ) {
     console.log("player 1 scored");
-    // cancelAnimationFrame(animationId);
     resetAfterScore();
   }
 
@@ -165,6 +173,7 @@ function animate() {
     player1.velocity.x = 20;
     player2.velocity.x = -20;
   }
+  
   if (
     ball.position.x - ball.radius > canvas.width ||
     ball.position.x + ball.radius < 0
