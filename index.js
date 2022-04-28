@@ -4,6 +4,8 @@ const ctx = canvas.getContext("2d");
 const startButton = document.querySelector("#startGame");
 const startModal = document.querySelector("#startModal");
 const restartButton = document.querySelector("#restartGame");
+const goalNotification = document.querySelector("#goal");
+const goalAnimation = document.querySelector(".goal");
 
 canvas.width = 1200;
 canvas.height = 576;
@@ -32,12 +34,10 @@ const keys = {
 
 const player1 = new Player({ x: 100, y: 0 }, 75, 150, "blue");
 const player2 = new Player({ x: canvas.width - 175, y: 0 }, 75, 150, "red");
-const ball = new Ball(
-  { x: canvas.width / 2, y: 0 },
-  30,
-  "white",
-  { x: 0, y: 0 }
-);
+const ball = new Ball({ x: canvas.width / 2, y: 0 }, 30, "white", {
+  x: 0,
+  y: 0,
+});
 const leftGoal = new Goal({ x: 0, y: canvas.height - 300 }, 300, 100, "green");
 const rightGoal = new Goal(
   { x: canvas.width - 100, y: canvas.height - 300 },
@@ -47,7 +47,7 @@ const rightGoal = new Goal(
 );
 
 function resetAfterScore() {
-  setTimeout(() => {
+
     ball.position = { x: canvas.width / 2, y: canvas.height - 30 };
     ball.velocity = { x: 0, y: -20 };
     player1.position = { x: 100, y: 0 };
@@ -56,9 +56,13 @@ function resetAfterScore() {
     player2.position = { x: canvas.width - 175, y: 0 };
     player2.velocity = { x: 0, y: 0 };
     player2.lastKey = null;
-  }, 0);
+    gameState = "goal"
+    setTimeout(()=>{
+        gameState="play"
+    }, 1000)
 }
-let gameState
+
+let gameState;
 let animationId;
 function animate() {
   animationId = requestAnimationFrame(animate);
@@ -69,33 +73,33 @@ function animate() {
   player1.update();
   player2.update();
   ball.update();
-  if(gameState==="play"){
-      if (keys.a.pressed && player1.lastKey === "a" && player1.position.x >= 0) {
-        player1.velocity.x = -10;
-      } else if (
-        keys.d.pressed &&
-        player1.lastKey === "d" &&
-        player1.position.x + player1.width <= canvas.width
-      ) {
-        player1.velocity.x = 10;
-      } else {
-        player1.velocity.x = 0;
-      }
-      if (
-        keys.ArrowLeft.pressed &&
-        player2.lastKey === "ArrowLeft" &&
-        player2.position.x >= 0
-      ) {
-        player2.velocity.x = -10;
-      } else if (
-        keys.ArrowRight.pressed &&
-        player2.lastKey === "ArrowRight" &&
-        player2.position.x + player2.width <= canvas.width
-      ) {
-        player2.velocity.x = 10;
-      } else {
-        player2.velocity.x = 0;
-      }
+  if (gameState === "play") {
+    if (keys.a.pressed && player1.lastKey === "a" && player1.position.x >= 0) {
+      player1.velocity.x = -10;
+    } else if (
+      keys.d.pressed &&
+      player1.lastKey === "d" &&
+      player1.position.x + player1.width <= canvas.width
+    ) {
+      player1.velocity.x = 10;
+    } else {
+      player1.velocity.x = 0;
+    }
+    if (
+      keys.ArrowLeft.pressed &&
+      player2.lastKey === "ArrowLeft" &&
+      player2.position.x >= 0
+    ) {
+      player2.velocity.x = -10;
+    } else if (
+      keys.ArrowRight.pressed &&
+      player2.lastKey === "ArrowRight" &&
+      player2.position.x + player2.width <= canvas.width
+    ) {
+      player2.velocity.x = 10;
+    } else {
+      player2.velocity.x = 0;
+    }
   }
 
   //Circle collision detection
@@ -139,13 +143,16 @@ function animate() {
     rectangleCircleCollison({ circle: ball, rectangle: rightGoal }) &&
     ball.position.y <= leftGoal.height
   ) {
-    ball.velocity.y = randomFactor>0.5?highBall:lowBall;
-    ball.velocity.x = -ball.velocity.x
+    ball.velocity.y = randomFactor > 0.5 ? highBall : lowBall;
+    ball.velocity.x = -ball.velocity.x;
+    cancelAnimationFrame(animationId)
   } else if (
     rectangleCircleCollison({ circle: ball, rectangle: leftGoal }) &&
     ball.position.x - ball.radius * 2 < leftGoal.position.x
   ) {
     console.log("player 2 scored");
+    goalNotification.style.display = "flex";
+    goalNotification.classList.add("goal");
     resetAfterScore();
   }
 
@@ -154,13 +161,15 @@ function animate() {
     rectangleCircleCollison({ circle: ball, rectangle: rightGoal }) &&
     ball.position.y <= rightGoal.height
   ) {
-    ball.velocity.y = randomFactor>0.5?highBall:lowBall;
-    ball.velocity.x = -ball.velocity.x
+    ball.velocity.y = randomFactor > 0.5 ? highBall : lowBall;
+    ball.velocity.x = -ball.velocity.x;
   } else if (
     rectangleCircleCollison({ circle: ball, rectangle: rightGoal }) &&
     ball.position.x > rightGoal.position.x + (ball.radius + 5)
   ) {
     console.log("player 1 scored");
+    goalNotification.style.display = "flex";
+    goalNotification.classList.add("goal");
     resetAfterScore();
   }
 
@@ -191,13 +200,18 @@ function animate() {
 }
 animate();
 startButton.addEventListener("click", () => {
-    startModal.style.display = "none";
-    gameState = "play";
-    ball.velocity.y = -20
-  });
+  startModal.style.display = "none";
+  gameState = "play";
+  ball.velocity.y = -20;
+});
 restartButton.addEventListener("click", () => {
-   location.reload()
-  });
+  location.reload();
+});
+goalAnimation.addEventListener("animationend", () => {
+  goalNotification.style.display = "none";
+  goalNotification.classList.remove("goal");
+  console.log("end");
+});
 window.addEventListener("keydown", (event) => {
   switch (event.key) {
     case "d":
