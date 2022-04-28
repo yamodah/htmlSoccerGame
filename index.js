@@ -7,7 +7,8 @@ const restartButton = document.querySelector("#restartGame");
 const goalNotification = document.querySelector("#goal");
 const goalAnimation = document.querySelector(".goal");
 
-
+const player1ScoreElement = document.querySelector("#player1Score")
+const player2ScoreElement = document.querySelector("#player2Score")
 
 canvas.width = 1200;
 canvas.height = 576;
@@ -47,7 +48,8 @@ const rightGoal = new Goal(
   100,
   "green"
 );
-
+let player1Score = 0
+let player2Score = 0
 function resetAfterScore() {
   ball.position = { x: canvas.width / 2, y: canvas.height - 30 };
   ball.velocity = { x: 0, y: -20 };
@@ -168,7 +170,8 @@ function animate() {
     rectangleCircleCollison({ circle: ball, rectangle: leftGoal }) &&
     ball.position.x - ball.radius * 2 < leftGoal.position.x
   ) {
-    console.log("player 2 scored");
+    player2Score++
+    player2ScoreElement.innerHTML = player2Score
     goalNotification.style.display = "flex";
     goalNotification.classList.add("goal");
     resetAfterScore();
@@ -185,7 +188,8 @@ function animate() {
     rectangleCircleCollison({ circle: ball, rectangle: rightGoal }) &&
     ball.position.x > rightGoal.position.x + (ball.radius + 5)
   ) {
-    console.log("player 1 scored");
+    player1Score++
+    player1ScoreElement.innerHTML = player1Score
     goalNotification.style.display = "flex";
     goalNotification.classList.add("goal");
     resetAfterScore();
@@ -198,7 +202,6 @@ function animate() {
   ) {
     player1.velocity.x = -20;
     player2.velocity.x = 20;
-    console.log("touching");
   } else if (
     rectangularCollision({ rectangle1: player1, rectangle2: player2 }) &&
     player2.position.x < player1.position.x
@@ -212,7 +215,6 @@ function animate() {
     ball.position.x - ball.radius > canvas.width ||
     ball.position.x + ball.radius < 0
   ) {
-    console.log("out");
     resetAfterScore();
   }
 }
@@ -228,7 +230,6 @@ restartButton.addEventListener("click", () => {
 goalAnimation.addEventListener("animationend", () => {
   goalNotification.style.display = "none";
   goalNotification.classList.remove("goal");
-  console.log("end");
 });
 window.addEventListener("keydown", (event) => {
   switch (event.key) {
