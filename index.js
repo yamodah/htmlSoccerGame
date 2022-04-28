@@ -141,12 +141,12 @@ function animate() {
   //bump collision
 
   if (rectangularCollision({ rectangle1: player1, rectangle2: player2 })&& player1.position.x<player2.position.x) {
-    player1.velocity.x = -50
-    player2.velocity.x = 50
+    player1.velocity.x = -20
+    player2.velocity.x = 20
     console.log("touching")
   }else if(rectangularCollision({rectangle1:player1, rectangle2:player2})&& player2.position.x<player1.position.x){
-    player1.velocity.x = 50
-    player2.velocity.x = -50
+    player1.velocity.x = 20
+    player2.velocity.x = -20
   }
   if(ball.position.x-ball.radius>canvas.width || ball.position.x+ball.radius <0){
       console.log("out")
