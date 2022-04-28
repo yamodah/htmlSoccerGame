@@ -59,3 +59,17 @@ class Ball {
     }
   }
 }
+class Goal {
+    constructor(position, height, width, color ){
+        this.position = position
+        this.height = height
+        this.width = width
+        this.color = color
+    }
+    draw() {
+        ctx.beginPath();
+        ctx.fillStyle = this.color;
+        ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
+        ctx.fill();
+      }
+}

@@ -26,26 +26,30 @@ const keys = {
   },
 };
 
-const player1 = new Player({ x: 0, y: 0 }, 75, 150, "blue");
-const player2 = new Player({ x: canvas.width - 75, y: 0 }, 75, 150, "red");
+const player1 = new Player({ x: 100, y: 0 }, 75, 150, "blue");
+const player2 = new Player({ x: canvas.width - 175, y: 0 }, 75, 150, "red");
 const ball = new Ball(
   { x: canvas.width / 2, y: canvas.height - 30 },
   30,
   "white",
   { x: 0, y: 0 }
 );
+const leftGoal = new Goal({x:0,y:canvas.height-300}, 300, 100, "green")
+const rightGoal = new Goal({ x: canvas.width - 100, y: canvas.height-300}, 300, 100, "green")
 function animate() {
   requestAnimationFrame(animate);
   ctx.fillStyle = "rgba(0,0,0)";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
+  leftGoal.draw()
+  rightGoal.draw()
   player1.update();
   player2.update();
   ball.update();
 
   if (keys.a.pressed && player1.lastKey === "a" && player1.position.x >= 0) {
-    player1.velocity.x = -5;
+    player1.velocity.x = -8;
   } else if (keys.d.pressed && player1.lastKey === "d") {
-    player1.velocity.x = 5;
+    player1.velocity.x = 8;
   } else {
     player1.velocity.x = 0;
   }
@@ -54,9 +58,9 @@ function animate() {
     player2.lastKey === "ArrowLeft" &&
     player2.position.x >= 0
   ) {
-    player2.velocity.x = -5;
+    player2.velocity.x = -8;
   } else if (keys.ArrowRight.pressed && player2.lastKey === "ArrowRight") {
-    player2.velocity.x = 5;
+    player2.velocity.x = 8;
   } else {
     player2.velocity.x = 0;
   }
@@ -65,11 +69,11 @@ function animate() {
   if (rectangleCircleCollison({ circle: ball, rectangle: player1 })) {
     //right side
     if (ball.position.x - ball.radius * 2 >= player1.position.x) {
-      ball.velocity.x = 10;
+      ball.velocity.x = 12;
       ball.velocity.y = -10;
       //left side
     } else if (ball.position.x <= player1.position.x) {
-      ball.velocity.x = -10;
+      ball.velocity.x = -12;
       ball.velocity.y = -10;
     }
   }
@@ -78,11 +82,11 @@ function animate() {
   if (rectangleCircleCollison({ circle: ball, rectangle: player2 })) {
     //right side
     if (ball.position.x - ball.radius * 2 >= player2.position.x) {
-      ball.velocity.x += 5;
+      ball.velocity.x = 12;
       ball.velocity.y = -10;
       //left side
     } else if (ball.position.x <= player2.position.x) {
-      ball.velocity.x += -5;
+      ball.velocity.x = -12;
       ball.velocity.y = -10;
     }
   }
