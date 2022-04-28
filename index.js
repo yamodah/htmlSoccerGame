@@ -4,7 +4,7 @@ const ctx = canvas.getContext("2d");
 canvas.width = 1024;
 canvas.height = 576;
 const gravity = 0.7;
-
+const friction = 0.89
 const keys = {
   a: {
     pressed: false,
@@ -60,28 +60,32 @@ function animate() {
   } else {
     player2.velocity.x = 0;
   }
-
+  //Circle collision detection
+  //player 1 circle detection
   if (rectangleCircleCollison({ circle: ball, rectangle: player1 })) {
-      //right side
-    if (ball.position.x - (ball.radius*2) >= player1.position.x) {
-        ball.velocity.x = 5
-        console.log(ball.x)
-     //left side
-    }else if(ball.position.x <= player1.position.x) {
-        ball.velocity.x = -5
-        console.log(ball.x)
-    }
-  }
-  if (rectangleCircleCollison({ circle: ball, rectangle: player2 })) {
-      //right side
-    if (ball.position.x - (ball.radius*2) >= player2.position.x) {
-        ball.velocity.x += 5
-     //left side
-    }else if(ball.position.x <= player2.position.x) {
-        ball.velocity.x += -5
+    //right side
+    if (ball.position.x - ball.radius * 2 >= player1.position.x) {
+      ball.velocity.x = 10;
+      ball.velocity.y = -10;
+      //left side
+    } else if (ball.position.x <= player1.position.x) {
+      ball.velocity.x = -10;
+      ball.velocity.y = -10;
     }
   }
 
+  //player 2 circle detection
+  if (rectangleCircleCollison({ circle: ball, rectangle: player2 })) {
+    //right side
+    if (ball.position.x - ball.radius * 2 >= player2.position.x) {
+      ball.velocity.x += 5;
+      ball.velocity.y = -10;
+      //left side
+    } else if (ball.position.x <= player2.position.x) {
+      ball.velocity.x += -5;
+      ball.velocity.y = -10;
+    }
+  }
 }
 animate();
 window.addEventListener("keydown", (event) => {

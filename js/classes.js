@@ -49,5 +49,13 @@ class Ball {
     this.draw();
     this.position.x += this.velocity.x;
     this.position.y += this.velocity.y;
+    if (this.position.y + this.velocity.y >= canvas.height - this.radius) {
+      this.velocity.y = -this.velocity.y/2;
+      this.velocity.x = this.velocity.x * friction;
+
+    } else {
+      this.velocity.y += gravity;
+    //   console.log("fall")
+    }
   }
 }
