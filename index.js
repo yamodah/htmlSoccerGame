@@ -4,7 +4,7 @@ const ctx = canvas.getContext("2d");
 canvas.width = 1024;
 canvas.height = 576;
 const gravity = 0.7;
-const friction = 0.89
+const friction = 0.89;
 const keys = {
   a: {
     pressed: false,
@@ -34,21 +34,43 @@ const ball = new Ball(
   "white",
   { x: 0, y: 0 }
 );
-const leftGoal = new Goal({x:0,y:canvas.height-300}, 300, 100, "green")
-const rightGoal = new Goal({ x: canvas.width - 100, y: canvas.height-300}, 300, 100, "green")
+const leftGoal = new Goal({ x: 0, y: canvas.height - 300 }, 300, 100, "green");
+const rightGoal = new Goal(
+  { x: canvas.width - 100, y: canvas.height - 300 },
+  300,
+  100,
+  "green"
+);
+function resetAfterScore() {
+  setTimeout(() => {
+    ball.position = { x: canvas.width / 2, y: canvas.height - 30 };
+    ball.velocity = { x: 0, y: -20 };
+    player1.position = { x: 100, y: 0 };
+    player1.velocity = { x: 0, y: 0 };
+    player1.lastKey = null;
+    player2.position = { x: canvas.width - 175, y: 0 };
+    player2.velocity = { x: 0, y: 0 };
+    player2.lastKey = null;
+  }, 0);
+}
+let animationId;
 function animate() {
-  requestAnimationFrame(animate);
+  animationId = requestAnimationFrame(animate);
   ctx.fillStyle = "rgba(0,0,0)";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
-  leftGoal.draw()
-  rightGoal.draw()
+  leftGoal.draw();
+  rightGoal.draw();
   player1.update();
   player2.update();
   ball.update();
 
   if (keys.a.pressed && player1.lastKey === "a" && player1.position.x >= 0) {
     player1.velocity.x = -8;
-  } else if (keys.d.pressed && player1.lastKey === "d") {
+  } else if (
+    keys.d.pressed &&
+    player1.lastKey === "d" &&
+    player1.position.x+player1.width <= canvas.width
+  ) {
     player1.velocity.x = 8;
   } else {
     player1.velocity.x = 0;
@@ -59,11 +81,16 @@ function animate() {
     player2.position.x >= 0
   ) {
     player2.velocity.x = -8;
-  } else if (keys.ArrowRight.pressed && player2.lastKey === "ArrowRight") {
+  } else if (
+    keys.ArrowRight.pressed &&
+    player2.lastKey === "ArrowRight" &&
+    player2.position.x+player2.width <= canvas.width
+  ) {
     player2.velocity.x = 8;
   } else {
     player2.velocity.x = 0;
   }
+
   //Circle collision detection
   //player 1 circle detection
   if (rectangleCircleCollison({ circle: ball, rectangle: player1 })) {
@@ -89,6 +116,26 @@ function animate() {
       ball.velocity.x = -12;
       ball.velocity.y = -10;
     }
+  }
+  //Score Detection
+  //player 1 goal
+  if (
+    rectangleCircleCollison({ circle: ball, rectangle: leftGoal }) &&
+    ball.position.x - ball.radius * 2 < leftGoal.position.x
+  ) {
+    console.log("player 2 scored");
+    // cancelAnimationFrame(animationId);
+    resetAfterScore();
+  }
+
+  //player 2 goal
+  if (
+    rectangleCircleCollison({ circle: ball, rectangle: rightGoal }) &&
+    ball.position.x > rightGoal.position.x + (ball.radius + 5)
+  ) {
+    console.log("player 1 scored");
+    // cancelAnimationFrame(animationId);
+    resetAfterScore();
   }
 }
 animate();
