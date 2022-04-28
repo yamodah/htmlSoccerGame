@@ -5,27 +5,31 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Soccer/Footy/Futbal</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
     <style>
-        *{
-            box-sizing: border-box;
-            font-family: 'Press Start 2P', cursive;
+      * {
+        box-sizing: border-box;
+        font-family: "Press Start 2P", cursive;
+      }
+      @keyframes slidein {
+        from {
+          margin-left: -100%;
+
         }
-        @keyframes goalScroll {
-          from{
-            background-color: white;
-          }
-          to{
-            background-color: black;
-          }
+        to {
+          margin-left: 200%;
+
         }
-        .goalScroll{
-          animation-duration: 2s;
-          animation-iteration-count: 1;
-          animation-name: goalScroll;
-        }
+      }
+      .goal {
+        animation-duration: 3s;
+        animation-name: slidein;
+      }
     </style>
   </head>
   <body>
@@ -60,7 +64,7 @@
           <h1>-</h1>
           <h1 id="player2Score" style="padding-left: 10px">0</h1>
         </div>
-        <h1 id="goal" style="color: white; display: none;">GOOOAAALLLL</h1>
+        <h1 id="goal" style="color: white; display: none;" class="goal">GOOOAAALLLL</h1>
       </div>
       <div
         id="result"
@@ -112,10 +116,12 @@
           "
         >
           <h3>CONTROLS</h3>
-          <div style="display: flex; flex-direction: column; align-items: center">
+          <div
+            style="display: flex; flex-direction: column; align-items: center"
+          >
             <p style="text-align: left; padding: 10px; margin-right: 10px">
-              JUMP:  W<br />
-              LEFT:  A<br />
+              JUMP: W<br />
+              LEFT: A<br />
               RIGHT:D<br />
             </p>
             <button
