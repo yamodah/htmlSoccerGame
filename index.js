@@ -56,7 +56,6 @@ function resetAfterScore() {
     player2.position = { x: canvas.width - 175, y: 0 };
     player2.velocity = { x: 0, y: 0 };
     player2.lastKey = null;
-    gameState = "goal"
 }
 
 let gameState;
@@ -137,12 +136,12 @@ function animate() {
   //Score Detection
   //player 1 goal
   if (
-    rectangleCircleCollison({ circle: ball, rectangle: rightGoal }) &&
+    rectangleCircleCollison({ circle: ball, rectangle: leftGoal }) &&
     ball.position.y <= leftGoal.height
   ) {
     ball.velocity.y = randomFactor > 0.5 ? highBall : lowBall;
     ball.velocity.x = -ball.velocity.x;
-    cancelAnimationFrame(animationId)
+
   } else if (
     rectangleCircleCollison({ circle: ball, rectangle: leftGoal }) &&
     ball.position.x - ball.radius * 2 < leftGoal.position.x
@@ -160,6 +159,8 @@ function animate() {
   ) {
     ball.velocity.y = randomFactor > 0.5 ? highBall : lowBall;
     ball.velocity.x = -ball.velocity.x;
+
+
   } else if (
     rectangleCircleCollison({ circle: ball, rectangle: rightGoal }) &&
     ball.position.x > rightGoal.position.x + (ball.radius + 5)
@@ -205,9 +206,8 @@ restartButton.addEventListener("click", () => {
   location.reload();
 });
 goalAnimation.addEventListener("animationend", () => {
-  goalNotification.style.display = "none";
-  goalNotification.classList.remove("goal");
-  gameState="play"
+    goalNotification.style.display = "none";
+    goalNotification.classList.remove("goal");
   console.log("end");
 });
 window.addEventListener("keydown", (event) => {
