@@ -1,6 +1,10 @@
 const canvas = document.querySelector("canvas");
 const ctx = canvas.getContext("2d");
 
+const startButton = document.querySelector("#startGame");
+const startModal = document.querySelector("#startModal");
+const restartButton = document.querySelector("#restartGame");
+
 canvas.width = 1200;
 canvas.height = 576;
 const gravity = 0.7;
@@ -54,7 +58,7 @@ function resetAfterScore() {
     player2.lastKey = null;
   }, 0);
 }
-
+let gameState
 let animationId;
 function animate() {
   animationId = requestAnimationFrame(animate);
@@ -65,32 +69,33 @@ function animate() {
   player1.update();
   player2.update();
   ball.update();
-
-  if (keys.a.pressed && player1.lastKey === "a" && player1.position.x >= 0) {
-    player1.velocity.x = -10;
-  } else if (
-    keys.d.pressed &&
-    player1.lastKey === "d" &&
-    player1.position.x + player1.width <= canvas.width
-  ) {
-    player1.velocity.x = 10;
-  } else {
-    player1.velocity.x = 0;
-  }
-  if (
-    keys.ArrowLeft.pressed &&
-    player2.lastKey === "ArrowLeft" &&
-    player2.position.x >= 0
-  ) {
-    player2.velocity.x = -10;
-  } else if (
-    keys.ArrowRight.pressed &&
-    player2.lastKey === "ArrowRight" &&
-    player2.position.x + player2.width <= canvas.width
-  ) {
-    player2.velocity.x = 10;
-  } else {
-    player2.velocity.x = 0;
+  if(gameState==="play"){
+      if (keys.a.pressed && player1.lastKey === "a" && player1.position.x >= 0) {
+        player1.velocity.x = -10;
+      } else if (
+        keys.d.pressed &&
+        player1.lastKey === "d" &&
+        player1.position.x + player1.width <= canvas.width
+      ) {
+        player1.velocity.x = 10;
+      } else {
+        player1.velocity.x = 0;
+      }
+      if (
+        keys.ArrowLeft.pressed &&
+        player2.lastKey === "ArrowLeft" &&
+        player2.position.x >= 0
+      ) {
+        player2.velocity.x = -10;
+      } else if (
+        keys.ArrowRight.pressed &&
+        player2.lastKey === "ArrowRight" &&
+        player2.position.x + player2.width <= canvas.width
+      ) {
+        player2.velocity.x = 10;
+      } else {
+        player2.velocity.x = 0;
+      }
   }
 
   //Circle collision detection
@@ -185,6 +190,14 @@ function animate() {
   }
 }
 animate();
+startButton.addEventListener("click", () => {
+    startModal.style.display = "none";
+    gameState = "play";
+    ball.velocity.y = -20
+  });
+restartButton.addEventListener("click", () => {
+   location.reload()
+  });
 window.addEventListener("keydown", (event) => {
   switch (event.key) {
     case "d":
