@@ -119,24 +119,24 @@ function animate() {
   }
   //Score Detection
   //player 1 goal
-//   if (
-//     rectangleCircleCollison({ circle: ball, rectangle: leftGoal }) &&
-//     ball.position.x - ball.radius * 2 < leftGoal.position.x
-//   ) {
-//     console.log("player 2 scored");
-//     // cancelAnimationFrame(animationId);
-//     resetAfterScore();
-//   }
+  if (
+    rectangleCircleCollison({ circle: ball, rectangle: leftGoal }) &&
+    ball.position.x - ball.radius * 2 < leftGoal.position.x
+  ) {
+    console.log("player 2 scored");
+    // cancelAnimationFrame(animationId);
+    resetAfterScore();
+  }
 
   //player 2 goal
-//   if (
-//     rectangleCircleCollison({ circle: ball, rectangle: rightGoal }) &&
-//     ball.position.x > rightGoal.position.x + (ball.radius + 5)
-//   ) {
-//     console.log("player 1 scored");
-//     // cancelAnimationFrame(animationId);
-//     resetAfterScore();
-//   }
+  if (
+    rectangleCircleCollison({ circle: ball, rectangle: rightGoal }) &&
+    ball.position.x > rightGoal.position.x + (ball.radius + 5)
+  ) {
+    console.log("player 1 scored");
+    // cancelAnimationFrame(animationId);
+    resetAfterScore();
+  }
 
   //bump collision
 
