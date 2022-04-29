@@ -11,7 +11,7 @@ const player1ScoreElement = document.querySelector("#player1Score")
 const player2ScoreElement = document.querySelector("#player2Score")
 
 canvas.width = 1200;
-canvas.height = 576;
+canvas.height = 776;
 const gravity = 0.7;
 const friction = 0.825;
 const keys = {
@@ -34,16 +34,16 @@ const keys = {
     pressed: false,
   },
 };
-
+const background = new Sprite({position:{x:0,y:0}, imgSrc:"./assets/Background.png"})
 const player1 = new Player({ x: 100, y: 0 }, 75, 150, "blue");
 const player2 = new Player({ x: canvas.width - 175, y: 0 }, 75, 150, "red");
 const ball = new Ball({ x: canvas.width / 2, y: 0 }, 30, "white", {
   x: 0,
   y: 0,
 });
-const leftGoal = new Goal({ x: 0, y: canvas.height - 300 }, 300, 100, "green", "left");
+const leftGoal = new Goal({ x: 0, y: canvas.height - 384 }, 300, 100, "green", "left");
 const rightGoal = new Goal(
-  { x: canvas.width - 100, y: canvas.height - 300 },
+  { x: canvas.width - 100, y: canvas.height - 384 },
   300,
   100,
   "green",
@@ -66,8 +66,10 @@ let gameState;
 let animationId;
 function animate() {
   animationId = requestAnimationFrame(animate);
-  ctx.fillStyle = "rgba(0,0,0)";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "black";
+  ctx.fillRect(0, 0, canvas.width, canvas.width);
+  background.update()
+ 
   leftGoal.draw();
   rightGoal.draw();
   player1.update();
