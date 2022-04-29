@@ -72,7 +72,7 @@ class Player extends Sprite{
 
     this.framesCurrent = 0;
     this.framesElapsed = 0;
-    this.framesHold = 8;
+    this.framesHold = 5;
     this.sprites = sprites;
 
     for (let sprite in this.sprites) {
@@ -99,6 +99,11 @@ class Player extends Sprite{
     }
   }
   switchSprite(sprite) {
+    if (
+      this.image === this.sprites.run.image &&
+      this.framesCurrent < this.sprites.run.framesMax - 1
+    )
+      return;
 
     switch (sprite) {
       case "idle":
