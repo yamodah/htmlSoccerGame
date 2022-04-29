@@ -72,7 +72,7 @@ class Goal {
     ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
     ctx.fill();
     ctx.fillStyle = "white";
-    ctx.fillRect(this.position.x, this.position.y, this.width, 15);
+    ctx.fillRect(this.position.x, this.position.y-2, this.width, 15);
     this.side === "left"
       ? ctx.fillRect(this.position.x, this.position.y, 10, this.height)
       : ctx.fillRect(
@@ -82,6 +82,19 @@ class Goal {
           this.height
         );
 
-    // ctx.strokeRect(this.position.x-10, this.position.y+10, this.width, this.height)
+    // ctx.strokeStyle = "white";
+    // ctx.lineWidth = 3;
+    // if (this.side === "left") {
+    //   for (let i = 1; i < 20; i++) {
+    //     ctx.moveTo(this.position.x + this.width - i * 20, this.position.y);
+    //     ctx.lineTo(this.position.x + this.width, this.position.y + i * 20);
+        
+    //   }
+    // }
+    
+
+    
+    // ctx.stroke();
+
   }
 }
