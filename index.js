@@ -108,8 +108,14 @@ const rightGoal = new Goal(
 );
 let player1Score = 0;
 let player2Score = 0;
+let lastScore;
 function resetAfterScore() {
-  ball.position = { x: canvas.width / 2, y: canvas.height - 117 };
+  //check who scored put it on the opposite side
+  lastScore === 0
+    ? (ball.position = { x: canvas.width / 2, y: canvas.height - 117 })
+    : lastScore === 1
+    ? (ball.position = { x: canvas.width / 3, y: canvas.height - 117 })
+    : (ball.position = { x: canvas.width / 1.25, y: canvas.height - 117 });
   ball.velocity = { x: 0, y: -20 };
   player1.position = { x: 100, y: 0 };
   player1.velocity = { x: 0, y: 0 };
@@ -205,16 +211,17 @@ function animate() {
   //player 1 circle detection
   if (rectangleCircleCollison({ circle: ball, rectangle: player1 })) {
     //right side
-    if (ball.position.x - ball.radius * 2 >= player1.position.x - player1.width/2) {
+    if (
+      ball.position.x - ball.radius * 2 >=
+      player1.position.x - player1.width / 2
+    ) {
       ball.velocity.x = randomFactor > 0.5 ? fastBall : slowBall;
       ball.velocity.y = randomFactor > 0.5 ? highBall : lowBall;
-
 
       //left side
     } else {
       ball.velocity.x = randomFactor > 0.5 ? -fastBall : -slowBall;
       ball.velocity.y = highBall;
-
     }
   }
 
@@ -228,7 +235,6 @@ function animate() {
     } else {
       ball.velocity.x = randomFactor > 0.5 ? -fastBall : -slowBall;
       ball.velocity.y = randomFactor > 0.5 ? highBall : lowBall;
-
     }
   }
 
@@ -248,6 +254,7 @@ function animate() {
     player2ScoreElement.innerHTML = player2Score;
     goalNotification.style.display = "flex";
     goalNotification.classList.add("goal");
+    lastScore = 2
     resetAfterScore();
   }
 
@@ -266,16 +273,16 @@ function animate() {
     player1ScoreElement.innerHTML = player1Score;
     goalNotification.style.display = "flex";
     goalNotification.classList.add("goal");
+    lastScore = 1
     resetAfterScore();
   }
-
-
 
   //out of bounds logic
   if (
     ball.position.x - ball.radius > canvas.width ||
     ball.position.x + ball.radius < 0
   ) {
+    lastScore = 0
     resetAfterScore();
   }
 }
