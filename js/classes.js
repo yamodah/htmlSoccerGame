@@ -46,23 +46,43 @@ class Sprite {
     }
   }
 }
-class Player {
-  constructor(position, width, height, color) {
-    this.position = position;
-    this.width = width;
-    this.height = height;
-    this.color = color;
-    this.velocity = { x: 0, y: 0 };
+class Player extends Sprite{
+  constructor({
+    position,
+    velocity,
+    color = "red",
+    imgSrc,
+    scale = 1,
+    framesMax = 1,
+    sprites,
+  }) {
+    super({
+      position,
+      imgSrc,
+      scale,
+      framesMax,
+      offset,
+    });
+    this.velocity = velocity;
+    this.height = 150;
+    this.width = 50;
     this.lastKey;
+    this.color = color;
+
+    this.framesCurrent = 0;
+    this.framesElapsed = 0;
+    this.framesHold = 5;
+    this.sprites = sprites;
+
+    for (let sprite in this.sprites) {
+      sprites[sprite].image = new Image();
+      sprites[sprite].image.src = sprites[sprite].imgSrc;
+    }
   }
-  draw() {
-    ctx.beginPath();
-    ctx.fillStyle = this.color;
-    ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
-    ctx.fill();
-  }
+  
   update() {
     this.draw();
+    this.animateFrames()
     this.position.x += this.velocity.x;
     this.position.y += this.velocity.y;
     if (this.position.y + this.height + this.velocity.y >= canvas.height) {
@@ -70,6 +90,33 @@ class Player {
       this.position.y = canvas.height - 150;
     } else {
       this.velocity.y += gravity;
+    }
+  }
+  switchSprite(sprite) {
+
+    switch (sprite) {
+      case "idle":
+        if (this.image !== this.sprites.idle.image) {
+          this.image = this.sprites.idle.image;
+          this.framesMax = this.sprites.idle.framesMax;
+          this.framesCurrent = 0;
+        }
+        break;
+      case "run":
+        if (this.image !== this.sprites.run.image) {
+          this.image = this.sprites.run.image;
+          this.framesMax = this.sprites.run.framesMax;
+          this.framesCurrent = 0;
+        }
+        break;
+      case "kick":
+        if (this.image !== this.sprites.kick.image) {
+          this.image = this.sprites.kick.image;
+          this.framesMax = this.sprites.kick.framesMax;
+          this.framesCurrent = 0;
+          this.position.y = Math.max(this.position.y, 0);
+        }
+        break;
     }
   }
 }
