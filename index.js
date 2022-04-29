@@ -41,12 +41,13 @@ const ball = new Ball({ x: canvas.width / 2, y: 0 }, 30, "white", {
   x: 0,
   y: 0,
 });
-const leftGoal = new Goal({ x: 0, y: canvas.height - 300 }, 300, 100, "green");
+const leftGoal = new Goal({ x: 0, y: canvas.height - 300 }, 300, 100, "green", "left");
 const rightGoal = new Goal(
   { x: canvas.width - 100, y: canvas.height - 300 },
   300,
   100,
-  "green"
+  "green",
+  "right"
 );
 let player1Score = 0
 let player2Score = 0

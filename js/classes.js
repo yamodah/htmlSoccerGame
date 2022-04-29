@@ -50,31 +50,38 @@ class Ball {
     this.position.x += this.velocity.x;
     this.position.y += this.velocity.y;
     if (this.position.y + this.velocity.y >= canvas.height - this.radius) {
-      this.velocity.y = -this.velocity.y/1.75;
+      this.velocity.y = -this.velocity.y / 1.75;
       this.velocity.x = this.velocity.x * friction;
-
     } else {
       this.velocity.y += gravity;
-    //   console.log("fall")
+      //   console.log("fall")
     }
   }
 }
 class Goal {
-    constructor(position, height, width, color, side ){
-        this.position = position
-        this.height = height
-        this.width = width
-        this.color = color
-        this.side = side
-    }
-    draw() {
-        ctx.beginPath();
-        ctx.fillStyle = this.color;
-        ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
-        ctx.fill();
-        ctx.fillStyle = "white"
-        ctx.fillRect(this.position.x, this.position.y, this.width, 10)
-        ctx.fillRect(this.position.x, this.position.y, 10, this.height)
-        // ctx.strokeRect(this.position.x-10, this.position.y+10, this.width, this.height)
-      }
+  constructor(position, height, width, color, side) {
+    this.position = position;
+    this.height = height;
+    this.width = width;
+    this.color = color;
+    this.side = side;
+  }
+  draw() {
+    ctx.beginPath();
+    ctx.fillStyle = this.color;
+    ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
+    ctx.fill();
+    ctx.fillStyle = "white";
+    ctx.fillRect(this.position.x, this.position.y, this.width, 15);
+    this.side === "left"
+      ? ctx.fillRect(this.position.x, this.position.y, 10, this.height)
+      : ctx.fillRect(
+          this.position.x + this.width - 10,
+          this.position.y,
+          10,
+          this.height
+        );
+
+    // ctx.strokeRect(this.position.x-10, this.position.y+10, this.width, this.height)
+  }
 }
