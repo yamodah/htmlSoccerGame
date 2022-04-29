@@ -115,7 +115,7 @@ class Player extends Sprite{
           this.image = this.sprites.kick.image;
           this.framesMax = this.sprites.kick.framesMax;
           this.framesCurrent = 0;
-          this.position.y = Math.max(this.position.y, 0);
+          // this.position.y = Math.max(this.position.y, 0);
         }
         break;
     }
@@ -145,7 +145,7 @@ class Ball {
     this.draw();
     this.position.x += this.velocity.x;
     this.position.y += this.velocity.y;
-    if (this.position.y + this.velocity.y >= canvas.height - this.radius) {
+    if (this.position.y + this.velocity.y >= canvas.height - this.radius - 87) {
       this.velocity.y = -this.velocity.y / 1.75;
       this.velocity.x = this.velocity.x * friction;
     } else {

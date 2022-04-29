@@ -7,8 +7,8 @@ const restartButton = document.querySelector("#restartGame");
 const goalNotification = document.querySelector("#goal");
 const goalAnimation = document.querySelector(".goal");
 
-const player1ScoreElement = document.querySelector("#player1Score")
-const player2ScoreElement = document.querySelector("#player2Score")
+const player1ScoreElement = document.querySelector("#player1Score");
+const player2ScoreElement = document.querySelector("#player2Score");
 
 canvas.width = 1200;
 canvas.height = 776;
@@ -34,14 +34,73 @@ const keys = {
     pressed: false,
   },
 };
-const background = new Sprite({position:{x:0,y:0}, imgSrc:"./assets/Background.png"})
-const player1 = new Player({ x: 100, y: 0 }, 75, 150, "blue");
-const player2 = new Player({ x: canvas.width - 175, y: 0 }, 75, 150, "red");
+const background = new Sprite({
+  position: { x: 0, y: 0 },
+  imgSrc: "./assets/Background.png",
+});
+const player1 = new Player({
+  position: { x: 0, y: 0 },
+  velocity: { x: 0, y: 0 },
+  offset: { x: 0, y: 0 },
+  imgSrc: "./assets/red/red-idle.png",
+  framesMax: 4,
+  scale: 2.5,
+  offset: {
+    x: 0,
+    y: 0,
+  },
+  sprites: {
+    idle: {
+      imgSrc: "./assets/red/red-idle.png",
+      framesMax: 4,
+    },
+    run: {
+      imgSrc: "./assets/red/red-run.png",
+      framesMax: 6,
+    },
+    kick: {
+      imgSrc: "./assets/red/red-kick.png",
+      framesMax: 4,
+    },
+  },
+});
+const player2 = new Player({
+  position: { x: 0, y: 0 },
+  velocity: { x: 0, y: 0 },
+  offset: { x: 0, y: 0 },
+  imgSrc: "./assets/blue/blue-idle.png",
+  framesMax: 4,
+  scale: 2.5,
+  offset: {
+    x: 215,
+    y: 157,
+  },
+  sprites: {
+    idle: {
+      imgSrc: "./assets/blue/blue-idle.png",
+      framesMax: 4,
+    },
+    run: {
+      imgSrc: "./assets/blue/blue-run.png",
+      framesMax: 6,
+    },
+    kick: {
+      imgSrc: "./assets/blue/blue-kick.png",
+      framesMax: 4,
+    },
+  },
+});
 const ball = new Ball({ x: canvas.width / 2, y: 0 }, 30, "white", {
   x: 0,
   y: 0,
 });
-const leftGoal = new Goal({ x: 0, y: canvas.height - 384 }, 300, 100, "green", "left");
+const leftGoal = new Goal(
+  { x: 0, y: canvas.height - 384 },
+  300,
+  100,
+  "green",
+  "left"
+);
 const rightGoal = new Goal(
   { x: canvas.width - 100, y: canvas.height - 384 },
   300,
@@ -49,8 +108,8 @@ const rightGoal = new Goal(
   "green",
   "right"
 );
-let player1Score = 0
-let player2Score = 0
+let player1Score = 0;
+let player2Score = 0;
 function resetAfterScore() {
   ball.position = { x: canvas.width / 2, y: canvas.height - 30 };
   ball.velocity = { x: 0, y: -20 };
@@ -68,8 +127,8 @@ function animate() {
   animationId = requestAnimationFrame(animate);
   ctx.fillStyle = "black";
   ctx.fillRect(0, 0, canvas.width, canvas.width);
-  background.update()
- 
+  background.update();
+
   leftGoal.draw();
   rightGoal.draw();
   player1.update();
@@ -78,37 +137,44 @@ function animate() {
   if (gameState === "play") {
     if (keys.a.pressed && player1.lastKey === "a" && player1.position.x >= 0) {
       player1.velocity.x = -10;
+      player1.switchSprite("run")
     } else if (
       keys.d.pressed &&
       player1.lastKey === "d" &&
       player1.position.x + player1.width <= canvas.width
     ) {
       player1.velocity.x = 10;
+      player1.switchSprite("run")
     } else {
       player1.velocity.x = 0;
+      player1.switchSprite("idle")
     }
-    if (gameState === "play") {
-      if (
-        ball.position.x > canvas.width / 2 &&
-        ball.position.x < player2.position.x - player2.width
-      ) {
-        player2.velocity.x = -10;
-      } else if (
-        ball.position.x >= canvas.width / 2 &&
-        ball.position.x > player2.position.x
-      ) {
-        player2.velocity.x = 10;
-      } else {
-        player2.velocity.x = 0;
-      }
-      if (
-        ball.position.y <= player2.position.y &&
-        ball.velocity.x > 0 &&
-        ball.position.x > canvas.width / 2 + player2.width
-      ) {
-        player2.velocity.y = -20;
-      }
+
+//player2 movement 
+    if (
+      ball.position.x > canvas.width / 2 &&
+      ball.position.x < player2.position.x - player2.width
+    ) {
+      player2.velocity.x = -10;
+      player1.switchSprite("run")
+    } else if (
+      ball.position.x >= canvas.width / 2 &&
+      ball.position.x > player2.position.x
+    ) {
+      player2.velocity.x = 10;
+      player1.switchSprite("run")
+    } else {
+      player2.velocity.x = 0;
+      player1.switchSprite("idle")
     }
+    if (
+      ball.position.y <= player2.position.y &&
+      ball.velocity.x > 0 &&
+      ball.position.x > canvas.width / 2 + player2.width
+    ) {
+      player2.velocity.y = -20;
+    }
+
     // if (
     //   keys.ArrowLeft.pressed &&
     //   player2.lastKey === "ArrowLeft" &&
@@ -173,8 +239,8 @@ function animate() {
     rectangleCircleCollison({ circle: ball, rectangle: leftGoal }) &&
     ball.position.x - ball.radius * 2 < leftGoal.position.x
   ) {
-    player2Score++
-    player2ScoreElement.innerHTML = player2Score
+    player2Score++;
+    player2ScoreElement.innerHTML = player2Score;
     goalNotification.style.display = "flex";
     goalNotification.classList.add("goal");
     resetAfterScore();
@@ -191,8 +257,8 @@ function animate() {
     rectangleCircleCollison({ circle: ball, rectangle: rightGoal }) &&
     ball.position.x > rightGoal.position.x + (ball.radius + 5)
   ) {
-    player1Score++
-    player1ScoreElement.innerHTML = player1Score
+    player1Score++;
+    player1ScoreElement.innerHTML = player1Score;
     goalNotification.style.display = "flex";
     goalNotification.classList.add("goal");
     resetAfterScore();
