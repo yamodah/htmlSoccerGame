@@ -120,7 +120,16 @@ function resetAfterScore() {
   player2.velocity = { x: 0, y: 0 };
   player2.lastKey = null;
 }
-
+function resetGame() {
+  player1Score = 0;
+  player2Score = 0;
+  player1ScoreElement.innerHTML = player1Score;
+  player2ScoreElement.innerHTML = player2Score;
+  restartButton.style.display = "none"
+  resultElement.style.display = "none"
+  gameState = "play"
+  resetAfterScore();
+}
 let gameState;
 let animationId;
 function animate() {
@@ -306,7 +315,7 @@ startButton.addEventListener("click", () => {
   ball.velocity.y = -20;
 });
 restartButton.addEventListener("click", () => {
-  location.reload();
+  resetGame();
 });
 goalAnimation.addEventListener("animationend", () => {
   goalNotification.style.display = "none";
