@@ -55,6 +55,7 @@ class Player extends Sprite{
     scale = 1,
     framesMax = 1,
     sprites,
+    offset = { x: 0, y: 0 },
   }) {
     super({
       position,
