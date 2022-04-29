@@ -269,20 +269,7 @@ function animate() {
     resetAfterScore();
   }
 
-  //player vs player bump collision
-  if (
-    rectangularCollision({ rectangle1: player1, rectangle2: player2 }) &&
-    player1.position.x < player2.position.x
-  ) {
-    player1.velocity.x = -20;
-    player2.velocity.x = 20;
-  } else if (
-    rectangularCollision({ rectangle1: player1, rectangle2: player2 }) &&
-    player2.position.x < player1.position.x
-  ) {
-    player1.velocity.x = 20;
-    player2.velocity.x = -20;
-  }
+
 
   //out of bounds logic
   if (
