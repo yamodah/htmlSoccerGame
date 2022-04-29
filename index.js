@@ -277,7 +277,6 @@ function animate() {
     ball.position.x - ball.radius > canvas.width ||
     ball.position.x + ball.radius < 0
   ) {
-
     resetAfterScore();
   }
 }
@@ -310,6 +309,9 @@ window.addEventListener("keydown", (event) => {
       }
       break;
   }
+
+  //uncomment for player 2 testing purposes
+  /*
   switch (event.key) {
     case "ArrowRight":
       keys.ArrowRight.pressed = true;
@@ -325,6 +327,7 @@ window.addEventListener("keydown", (event) => {
       }
       break;
   }
+   */
 });
 window.addEventListener("keyup", (event) => {
   switch (event.key) {
@@ -337,6 +340,9 @@ window.addEventListener("keyup", (event) => {
     case "w":
       keys.w.pressed = false;
       break;
+
+    //uncomment for player 2 testing purposes
+    /*
     case "ArrowLeft":
       keys.ArrowLeft.pressed = false;
       break;
@@ -346,5 +352,6 @@ window.addEventListener("keyup", (event) => {
     case "ArrowUp":
       keys.ArrowUp.pressed = false;
       break;
+      */
   }
 });
