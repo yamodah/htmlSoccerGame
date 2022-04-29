@@ -9,6 +9,7 @@ const goalAnimation = document.querySelector(".goal");
 
 const player1ScoreElement = document.querySelector("#player1Score");
 const player2ScoreElement = document.querySelector("#player2Score");
+const resultElement = document.querySelector("#result");
 
 canvas.width = 1200;
 canvas.height = 776;
@@ -249,8 +250,17 @@ function animate() {
     player2ScoreElement.innerHTML = player2Score;
     goalNotification.style.display = "flex";
     goalNotification.classList.add("goal");
-
     resetAfterScore();
+    if (player2Score >= 5) {
+      gameState = "gameOver";
+      setTimeout(() => {
+        resultElement.style.display = "flex";
+        resultElement.innerHTML = "YOU LOSE";
+      }, 1000);
+      setTimeout(() => {
+        restartButton.style.display = "flex";
+      }, 2000);
+    }
   }
 
   //player 2 goal
@@ -268,7 +278,16 @@ function animate() {
     player1ScoreElement.innerHTML = player1Score;
     goalNotification.style.display = "flex";
     goalNotification.classList.add("goal");
-
+    if (player1Score >= 5) {
+      gameState = "gameOver";
+      setTimeout(() => {
+        resultElement.style.display = "flex";
+        resultElement.innerHTML = "YOU WIN";
+      }, 1000);
+      setTimeout(() => {
+        restartButton.style.display = "flex";
+      }, 2000);
+    }
     resetAfterScore();
   }
 
@@ -277,8 +296,7 @@ function animate() {
     ball.position.x - ball.radius > canvas.width ||
     ball.position.x + ball.radius < 0
   ) {
-      ball.velocity.x = -ball.velocity.x
-    // resetAfterScore();
+    ball.velocity.x = -ball.velocity.x;
   }
 }
 animate();
