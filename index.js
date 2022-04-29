@@ -108,14 +108,9 @@ const rightGoal = new Goal(
 );
 let player1Score = 0;
 let player2Score = 0;
-let lastScore;
+
 function resetAfterScore() {
-  //check who scored put it on the opposite side
-  lastScore === 0
-    ? (ball.position = { x: canvas.width / 2, y: canvas.height - 117 })
-    : lastScore === 1
-    ? (ball.position = { x: canvas.width / 3, y: canvas.height - 117 })
-    : (ball.position = { x: canvas.width / 1.25, y: canvas.height - 117 });
+  ball.position = { x: canvas.width / 2, y: canvas.height - 117 };
   ball.velocity = { x: 0, y: -20 };
   player1.position = { x: 100, y: 0 };
   player1.velocity = { x: 0, y: 0 };
@@ -160,16 +155,16 @@ function animate() {
       ball.position.x < player2.position.x - player2.width
     ) {
       player2.velocity.x = -10;
-      player1.switchSprite("run");
+      player2.switchSprite("run");
     } else if (
       ball.position.x >= canvas.width / 2 &&
       ball.position.x > player2.position.x
     ) {
       player2.velocity.x = 10;
-      player1.switchSprite("run");
+      player2.switchSprite("run");
     } else {
       player2.velocity.x = 0;
-      player1.switchSprite("idle");
+      player2.switchSprite("idle");
     }
     if (
       ball.position.y <= player2.position.y &&
@@ -254,7 +249,7 @@ function animate() {
     player2ScoreElement.innerHTML = player2Score;
     goalNotification.style.display = "flex";
     goalNotification.classList.add("goal");
-    lastScore = 2
+
     resetAfterScore();
   }
 
@@ -273,7 +268,7 @@ function animate() {
     player1ScoreElement.innerHTML = player1Score;
     goalNotification.style.display = "flex";
     goalNotification.classList.add("goal");
-    lastScore = 1
+
     resetAfterScore();
   }
 
@@ -282,7 +277,7 @@ function animate() {
     ball.position.x - ball.radius > canvas.width ||
     ball.position.x + ball.radius < 0
   ) {
-    lastScore = 0
+
     resetAfterScore();
   }
 }
