@@ -12,7 +12,7 @@ const player2ScoreElement = document.querySelector("#player2Score");
 
 canvas.width = 1200;
 canvas.height = 776;
-const gravity = 0.7;
+const gravity = 0.8;
 const friction = 0.825;
 const keys = {
   a: {
@@ -39,15 +39,14 @@ const background = new Sprite({
   imgSrc: "./assets/Background.png",
 });
 const player1 = new Player({
-  position: { x: 0, y: 0 },
+  position: { x: 75, y: 0 },
   velocity: { x: 0, y: 0 },
-  offset: { x: 0, y: 0 },
   imgSrc: "./assets/red/red-idle.png",
   framesMax: 4,
   scale: 2.5,
   offset: {
-    x: 0,
-    y: 0,
+    x: 5,
+    y: 3,
   },
   sprites: {
     idle: {
@@ -65,15 +64,14 @@ const player1 = new Player({
   },
 });
 const player2 = new Player({
-  position: { x: 0, y: 0 },
+  position: { x: canvas.width - 130, y: 150 },
   velocity: { x: 0, y: 0 },
-  offset: { x: 0, y: 0 },
   imgSrc: "./assets/blue/blue-idle.png",
   framesMax: 4,
   scale: 2.5,
   offset: {
-    x: 215,
-    y: 157,
+    x: 11,
+    y: 3,
   },
   sprites: {
     idle: {
@@ -98,20 +96,20 @@ const leftGoal = new Goal(
   { x: 0, y: canvas.height - 384 },
   300,
   100,
-  "green",
+  "#10B981",
   "left"
 );
 const rightGoal = new Goal(
   { x: canvas.width - 100, y: canvas.height - 384 },
   300,
   100,
-  "green",
+  "#10B981",
   "right"
 );
 let player1Score = 0;
 let player2Score = 0;
 function resetAfterScore() {
-  ball.position = { x: canvas.width / 2, y: canvas.height - 30 };
+  ball.position = { x: canvas.width / 2, y: canvas.height - 117 };
   ball.velocity = { x: 0, y: -20 };
   player1.position = { x: 100, y: 0 };
   player1.velocity = { x: 0, y: 0 };
@@ -137,59 +135,62 @@ function animate() {
   if (gameState === "play") {
     if (keys.a.pressed && player1.lastKey === "a" && player1.position.x >= 0) {
       player1.velocity.x = -10;
-      player1.switchSprite("run")
+      player1.switchSprite("run");
     } else if (
       keys.d.pressed &&
       player1.lastKey === "d" &&
       player1.position.x + player1.width <= canvas.width
     ) {
       player1.velocity.x = 10;
-      player1.switchSprite("run")
+      player1.switchSprite("run");
     } else {
       player1.velocity.x = 0;
-      player1.switchSprite("idle")
+      player1.switchSprite("idle");
     }
 
-//player2 movement 
+    //player2 (cpu) movement
     if (
       ball.position.x > canvas.width / 2 &&
       ball.position.x < player2.position.x - player2.width
     ) {
       player2.velocity.x = -10;
-      player1.switchSprite("run")
+      player1.switchSprite("run");
     } else if (
       ball.position.x >= canvas.width / 2 &&
       ball.position.x > player2.position.x
     ) {
       player2.velocity.x = 10;
-      player1.switchSprite("run")
+      player1.switchSprite("run");
     } else {
       player2.velocity.x = 0;
-      player1.switchSprite("idle")
+      player1.switchSprite("idle");
     }
     if (
       ball.position.y <= player2.position.y &&
       ball.velocity.x > 0 &&
       ball.position.x > canvas.width / 2 + player2.width
     ) {
-      player2.velocity.y = -20;
+      player2.velocity.y = -15;
     }
 
-    // if (
-    //   keys.ArrowLeft.pressed &&
-    //   player2.lastKey === "ArrowLeft" &&
-    //   player2.position.x >= 0
-    // ) {
-    //   player2.velocity.x = -10;
-    // } else if (
-    //   keys.ArrowRight.pressed &&
-    //   player2.lastKey === "ArrowRight" &&
-    //   player2.position.x + player2.width <= canvas.width
-    // ) {
-    //   player2.velocity.x = 10;
-    // } else {
-    //   player2.velocity.x = 0;
-    // }
+    // uncomment to test player 2 physics/animation manually
+
+    /* if (
+      keys.ArrowLeft.pressed &&
+      player2.lastKey === "ArrowLeft" &&
+      player2.position.x >= 0
+    ) {
+      player2.velocity.x = -10;
+    } else if (
+      keys.ArrowRight.pressed &&
+      player2.lastKey === "ArrowRight" &&
+      player2.position.x + player2.width <= canvas.width
+    ) {
+      player2.velocity.x = 10;
+    } else {
+      player2.velocity.x = 0;
+    }
+  */
   }
 
   //Circle collision detection
@@ -204,13 +205,16 @@ function animate() {
   //player 1 circle detection
   if (rectangleCircleCollison({ circle: ball, rectangle: player1 })) {
     //right side
-    if (ball.position.x - ball.radius * 2 >= player1.position.x) {
+    if (ball.position.x - ball.radius * 2 >= player1.position.x - player1.width/2) {
       ball.velocity.x = randomFactor > 0.5 ? fastBall : slowBall;
       ball.velocity.y = randomFactor > 0.5 ? highBall : lowBall;
+
+
       //left side
     } else {
       ball.velocity.x = randomFactor > 0.5 ? -fastBall : -slowBall;
-      ball.velocity.y = randomFactor > 0.5 ? highBall : lowBall;
+      ball.velocity.y = highBall;
+
     }
   }
 
@@ -224,6 +228,7 @@ function animate() {
     } else {
       ball.velocity.x = randomFactor > 0.5 ? -fastBall : -slowBall;
       ball.velocity.y = randomFactor > 0.5 ? highBall : lowBall;
+
     }
   }
 
@@ -231,7 +236,7 @@ function animate() {
   //player 1 goal
   if (
     rectangleCircleCollison({ circle: ball, rectangle: leftGoal }) &&
-    ball.position.y <= leftGoal.height
+    ball.position.y <= leftGoal.height + 95
   ) {
     ball.velocity.y = randomFactor > 0.5 ? highBall : lowBall;
     ball.velocity.x = -ball.velocity.x;
@@ -249,7 +254,7 @@ function animate() {
   //player 2 goal
   if (
     rectangleCircleCollison({ circle: ball, rectangle: rightGoal }) &&
-    ball.position.y <= rightGoal.height
+    ball.position.y <= rightGoal.height + 84
   ) {
     ball.velocity.y = randomFactor > 0.5 ? highBall : lowBall;
     ball.velocity.x = -ball.velocity.x;

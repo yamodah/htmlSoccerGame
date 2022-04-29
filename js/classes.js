@@ -65,14 +65,14 @@ class Player extends Sprite{
       offset,
     });
     this.velocity = velocity;
-    this.height = 150;
-    this.width = 50;
+    this.height = 50;
+    this.width = 45;
     this.lastKey;
     this.color = color;
 
     this.framesCurrent = 0;
     this.framesElapsed = 0;
-    this.framesHold = 5;
+    this.framesHold = 8;
     this.sprites = sprites;
 
     for (let sprite in this.sprites) {
@@ -84,11 +84,16 @@ class Player extends Sprite{
   update() {
     this.draw();
     this.animateFrames()
+
+    //uncomment to see hit box
+    // ctx.fillStyle = "rgba(255,255,255,0.15)"
+    // ctx.fillRect(this.position.x, this.position.y, this.width, this.height)
+
     this.position.x += this.velocity.x;
     this.position.y += this.velocity.y;
-    if (this.position.y + this.height + this.velocity.y >= canvas.height) {
+    if (this.position.y + this.height + this.velocity.y >= canvas.height-84) {
       this.velocity.y = 0;
-      this.position.y = canvas.height - 150;
+      this.position.y = canvas.height -130;
     } else {
       this.velocity.y += gravity;
     }
@@ -150,7 +155,7 @@ class Ball {
       this.velocity.x = this.velocity.x * friction;
     } else {
       this.velocity.y += gravity;
-      //   console.log("fall")
+
     }
   }
 }
