@@ -93,15 +93,15 @@ const ball = new Ball({ x: canvas.width / 2, y: 0 }, 30, "white", {
   y: 0,
 });
 const leftGoal = new Goal(
-  { x: 0, y: canvas.height - 384 },
-  300,
+  { x: 0, y: canvas.height - 309 },
+  225,
   100,
   "#10B981",
   "left"
 );
 const rightGoal = new Goal(
-  { x: canvas.width - 100, y: canvas.height - 384 },
-  300,
+  { x: canvas.width - 100, y: canvas.height - 309 },
+  225,
   100,
   "#10B981",
   "right"
@@ -237,7 +237,7 @@ function animate() {
   //player 1 goal
   if (
     rectangleCircleCollison({ circle: ball, rectangle: leftGoal }) &&
-    ball.position.y <= leftGoal.height + 95
+    ball.position.y + ball.radius <= leftGoal.height + 295
   ) {
     ball.velocity.y = randomFactor > 0.5 ? highBall : lowBall;
     ball.velocity.x = -ball.velocity.x;
@@ -256,7 +256,7 @@ function animate() {
   //player 2 goal
   if (
     rectangleCircleCollison({ circle: ball, rectangle: rightGoal }) &&
-    ball.position.y <= rightGoal.height + 84
+    ball.position.y + ball.radius <= rightGoal.height + 280
   ) {
     ball.velocity.y = randomFactor > 0.5 ? highBall : lowBall;
     ball.velocity.x = -ball.velocity.x;
@@ -277,7 +277,8 @@ function animate() {
     ball.position.x - ball.radius > canvas.width ||
     ball.position.x + ball.radius < 0
   ) {
-    resetAfterScore();
+      ball.velocity.x = -ball.velocity.x
+    // resetAfterScore();
   }
 }
 animate();
