@@ -110,10 +110,10 @@ const ball = new Ball({
   color: "white",
   imgSrc: isMobile() ? "./assets/futbol-mobile.png" : "./assets/futbol.png",
   velocity: { x: 0, y: 0 },
-  offset:{
-      x:isMobile()?15:30,
-      y:isMobile()?15:28
-  }
+  offset: {
+    x: isMobile() ? 15 : 30,
+    y: isMobile() ? 15 : 28,
+  },
 });
 const leftGoal = new Goal(
   { x: 0, y: isMobile() ? canvas.height - 171 : canvas.height - 309 },
@@ -196,7 +196,7 @@ function animate() {
       } else if (
         ball.position.x >= canvas.width / 2 &&
         ball.position.x > player2.position.x &&
-        player2.position.x < canvas.width - rightGoal.width - (ball.radius*2)
+        player2.position.x < canvas.width - rightGoal.width - ball.radius * 2
       ) {
         player2.velocity.x = 10;
         player2.switchSprite("run");
@@ -216,15 +216,13 @@ function animate() {
         ball.position.x > canvas.width / 1.75 &&
         ball.position.x < player2.position.x - player2.width
       ) {
-          console.log("run forward")
+        console.log("run forward");
         player2.velocity.x = -10;
-
       } else if (
         ball.position.x >= canvas.width / 1.75 &&
-        ball.position.x  > player2.position.x &&
-        player2.position.x < canvas.width - rightGoal.width - (ball.radius*2)
+        ball.position.x > player2.position.x &&
+        player2.position.x < canvas.width - rightGoal.width - ball.radius * 2
       ) {
-
         player2.velocity.x = 10;
         player2.switchSprite("run");
       } else {
@@ -234,8 +232,8 @@ function animate() {
       if (
         ball.position.y <= player2.position.y &&
         ball.velocity.x > 0 &&
-        ball.position.x > canvas.width / 2 + player2.width&&
-        player2.position.y > canvas.height/2
+        ball.position.x > canvas.width / 2 + player2.width &&
+        player2.position.y > canvas.height / 2
       ) {
         player2.velocity.y = -10;
       }
@@ -297,7 +295,6 @@ function animate() {
     } else {
       ball.velocity.x = randomFactor > 0.5 ? -fastBall : -slowBall;
       ball.velocity.y = randomFactor > 0.5 ? highBall : lowBall;
-
     }
   }
 
@@ -366,6 +363,27 @@ function animate() {
     ball.velocity.x = -ball.velocity.x;
   } else if (ball.position.y + ball.velocity.y < 0) {
     ball.velocity.y = -ball.velocity.y;
+  }
+}
+function handleMobileTouches(e) {
+  if (
+    (e.touches[0].pageX || e.touches[1].pageX) > player1.position.x &&
+    player1.position.x >= 0
+  ) {
+    player1.velocity.x = -10;
+    player1.switchSprite("run");
+  } else if (
+    (e.touches[0].pageX || e.touches[1].pageX) > player1.position.x &&
+    player1.position.x + player1.width <= canvas.width
+  ) {
+    player1.velocity.x = 10;
+    player1.switchSprite("run");
+  }
+  if (
+    (e.touches[0].pageY || e.touches[1].pageY) >= canvas.height / 2 &&
+    player1.position.y > canvas.height / 2
+  ) {
+    player1.velocity.y = -20;
   }
 }
 animate();
@@ -460,4 +478,7 @@ window.addEventListener("keyup", (event) => {
       break;
       */
   }
+});
+window.addEventListener("touchstart", (e) => {
+  handleMobileTouches(e);
 });

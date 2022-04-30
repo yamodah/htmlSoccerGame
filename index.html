@@ -52,15 +52,15 @@
         animation-duration: 2s;
         animation-name: slidein;
         position: absolute;
-        top:0;
-        margin-top:13rem;
+        top: 0;
+        margin-top: 13rem;
         text-shadow: 4px 4px 10px #10b981;
       }
       .title {
         animation-duration: 4s;
         animation-name: fadeOut;
       }
-      .score{
+      .score {
         animation: forwards;
         animation-duration: 2s;
         animation-name: fadeIn;
@@ -77,11 +77,11 @@
       .titleStyle {
         color: white;
         display: flex;
-        position:absolute;
+        position: absolute;
         justify-content: center;
         text-shadow: 4px 4px #10b981;
         padding-top: 2rem;
-        top:0;
+        top: 0;
       }
       .controls {
         display: flex;
@@ -94,6 +94,15 @@
         width: 25%;
         background-color: rgb(30, 41, 59, 0.75);
       }
+      .canvas {
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        -o-user-select: none;
+        user-select: none;
+      }
       @media screen and (max-width: 1000px) {
         .controls {
           flex-direction: row;
@@ -104,13 +113,13 @@
         .titleStyle {
           padding-top: 1rem;
         }
-        .goal{
+        .goal {
           margin-top: 8rem;
         }
       }
     </style>
   </head>
-  <body>
+  <body unselectable="on" ontouchstart="touchStart(event);">
     <div style="position: relative; display: inline-block">
       <div
         style="
@@ -163,7 +172,7 @@
           left: 0;
           bottom: 0;
           text-shadow: 2px 2px black;
-          margin-bottom: 5rem
+          margin-bottom: 5rem;
         "
       >
         <h1>TIE</h1>
