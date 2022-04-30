@@ -132,7 +132,7 @@ const rightGoal = new Goal(
   "#10B981",
   "right"
 );
-const crossbarOffset = isMobile() ? 130 : 295;
+const crossbarOffset = isMobile() ? 135 : 300;
 let player1Score = 0;
 let player2Score = 0;
 
@@ -195,7 +195,8 @@ function animate() {
         player2.switchSprite("run");
       } else if (
         ball.position.x >= canvas.width / 2 &&
-        ball.position.x > player2.position.x
+        ball.position.x > player2.position.x &&
+        player2.position.x < canvas.width - rightGoal.width - (ball.radius*2)
       ) {
         player2.velocity.x = 10;
         player2.switchSprite("run");
@@ -215,13 +216,15 @@ function animate() {
         ball.position.x > canvas.width / 1.75 &&
         ball.position.x < player2.position.x - player2.width
       ) {
+          console.log("run forward")
         player2.velocity.x = -10;
-        player2.switchSprite("run");
+
       } else if (
         ball.position.x >= canvas.width / 1.75 &&
-        ball.position.x > player2.position.x &&
-        player2.position < canvas.width
+        ball.position.x  > player2.position.x &&
+        player2.position.x < canvas.width - rightGoal.width - (ball.radius*2)
       ) {
+
         player2.velocity.x = 10;
         player2.switchSprite("run");
       } else {
@@ -231,7 +234,8 @@ function animate() {
       if (
         ball.position.y <= player2.position.y &&
         ball.velocity.x > 0 &&
-        ball.position.x > canvas.width / 2 + player2.width
+        ball.position.x > canvas.width / 2 + player2.width&&
+        player2.position.y > canvas.height/2
       ) {
         player2.velocity.y = -10;
       }
@@ -318,7 +322,7 @@ function animate() {
       gameState = "gameOver";
       setTimeout(() => {
         resultElement.style.display = "flex";
-        resultElement.innerHTML = "YOU LOSE";
+        resultElement.innerHTML = "<h1>YOU LOSE<h1>";
       }, 1000);
       setTimeout(() => {
         restartButton.style.display = "flex";
@@ -345,7 +349,7 @@ function animate() {
       gameState = "gameOver";
       setTimeout(() => {
         resultElement.style.display = "flex";
-        resultElement.innerHTML = "YOU WIN";
+        resultElement.innerHTML = "<h1>YOU WIN<h1>";
       }, 1000);
       setTimeout(() => {
         restartButton.style.display = "flex";
