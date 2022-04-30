@@ -369,14 +369,14 @@ function handleMobileTouches(e) {
   if (gameState === "play") {
     if (
         (e.touches[0].pageX || e.touches[1].pageX) > canvas.width / 2 &&
-      player1.position.x >= 0
+      player1.position.x <= canvas.width 
     ) {
       player1.velocity.x = 10;
       player1.switchSprite("run");
     } 
     if (
         (e.touches[0].pageX || e.touches[1].pageX) < canvas.width / 2 &&
-      player1.position.x + player1.width <= canvas.width 
+      player1.position.x + player1.width >= 0 
     ) {
       player1.velocity.x = -10;
       player1.switchSprite("run");
