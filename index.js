@@ -380,7 +380,7 @@ function handleMobileTouches(e) {
     player1.switchSprite("run");
   }
   if (
-    (e.touches[0].pageY || e.touches[1].pageY) >= canvas.height / 2 &&
+    (e.touches[0].pageY || e.touches[1].pageY) <= canvas.height / 2 &&
     player1.position.y > canvas.height / 2
   ) {
     player1.velocity.y = -20;
