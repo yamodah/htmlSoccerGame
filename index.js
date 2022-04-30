@@ -187,8 +187,8 @@ function animate() {
       player1.switchSprite("idle");
     }
   }
-  if(player1.velocity.x === 0){
-      player1.switchSprite("idle")
+  if (player1.velocity.x === 0) {
+    player1.switchSprite("idle");
   }
   //player2 (cpu) movement
   if (!isMobile()) {
@@ -369,25 +369,24 @@ function animate() {
   }
 }
 function handleMobileTouches(e) {
-  console.log(e.touches[0].screenX, e.touches[0].pageX);
+  console.log(e.touches[0].pageY, canvas.height / 2);
   if (gameState === "play") {
     if (
-      (e.touches[0].screenX || e.touches[1]?.screenX ) > canvas.width / 2 &&
-      player1.position.x - leftGoal.width<= canvas.width
+      (e.touches[0].screenX || e.touches[1]?.screenX) > canvas.width / 2 &&
+      player1.position.x + player1.width+100 <= canvas.width
     ) {
       player1.velocity.x = 10;
       player1.switchSprite("run");
-    }
-    if (
+    }else if (
       (e.touches[0].screenX || e.touches[1]?.screenX) < canvas.width / 2 &&
-      player1.position.x + player1.width +leftGoal.width >= 0
+      player1.position.x - player1.width-100  >= 0
     ) {
       player1.velocity.x = -10;
       player1.switchSprite("run");
     }
 
     if (
-      (e.touches[0].screenY || e.touches[1]?.screenY ) <= canvas.height / 2 &&
+      (e.touches[0].pageY || e.touches[1]?.pageY) <= canvas.height / 2 &&
       player1.position.y > canvas.height / 2
     ) {
       player1.velocity.y = -20;
