@@ -369,22 +369,19 @@ function handleMobileTouches(e) {
   if (gameState === "play") {
     if (
       e.touches[0].pageX > canvas.width / 2 &&
-      player1.position.x >= 0 &&
-      e.touches[0].pageX >= canvas.height / 2
+      player1.position.x >= 0
     ) {
       player1.velocity.x = 10;
       player1.switchSprite("run");
-    } else if (
+    } 
+    if (
       e.touches[0].pageX < canvas.width / 2 &&
-      player1.position.x + player1.width <= canvas.width &&
-      e.touches[0].pageX >= canvas.height / 2
+      player1.position.x + player1.width <= canvas.width 
     ) {
       player1.velocity.x = -10;
       player1.switchSprite("run");
-    } else {
-      player1.velocity.x = 0;
-      player1.switchSprite("idle");
-    }
+    } 
+    
     if (
       (e.touches[0].pageY || e.touches[1].pageY) <= canvas.height / 2 &&
       player1.position.y > canvas.height / 2
@@ -490,6 +487,7 @@ window.addEventListener("touchstart", (e) => {
   handleMobileTouches(e);
 });
 window.addEventListener("touchend", (e) => {
-  player1.velocity.x = 0;
   player1.switchSprite("idle");
+  player1.velocity.x = 0;
+  console.log("end")
 });
