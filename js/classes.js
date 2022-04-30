@@ -46,7 +46,7 @@ class Sprite {
     }
   }
 }
-class Player extends Sprite{
+class Player extends Sprite {
   constructor({
     position,
     velocity,
@@ -80,20 +80,19 @@ class Player extends Sprite{
       sprites[sprite].image.src = sprites[sprite].imgSrc;
     }
   }
-  
+
   update() {
     this.draw();
-    this.animateFrames()
-
+    this.animateFrames();
     //uncomment to see hit box
     // ctx.fillStyle = "rgba(255,255,255,0.15)"
     // ctx.fillRect(this.position.x, this.position.y, this.width, this.height)
 
     this.position.x += this.velocity.x;
     this.position.y += this.velocity.y;
-    if (this.position.y + this.height + this.velocity.y >= canvas.height-84) {
+    if (this.position.y + this.height + this.velocity.y >= canvas.height - 84) {
       this.velocity.y = 0;
-      this.position.y = canvas.height -130;
+      this.position.y = canvas.height - 130;
     } else {
       this.velocity.y += gravity;
     }
@@ -134,7 +133,7 @@ class Player extends Sprite{
 class Ball {
   constructor(position, radius, color, velocity) {
     this.position = position;
-    this.radius = radius;
+    this.radius = isMobile() ? radius / 2 : radius;
     this.color = color;
     this.velocity = velocity;
   }
@@ -153,22 +152,38 @@ class Ball {
   }
   update() {
     this.draw();
-    this.position.x += this.velocity.x;
-    this.position.y += this.velocity.y;
-    if (this.position.y + this.velocity.y >= canvas.height - this.radius - 87) {
-      this.velocity.y = -this.velocity.y / 1.75;
-      this.velocity.x = this.velocity.x * friction;
-    } else {
-      this.velocity.y += gravity;
+    this.position.x += isMobile()?this.velocity.x/1.25:this.velocity.x;
+    this.position.y += isMobile()?this.velocity.y/1.25:this.velocity.y;
 
+    if (isMobile()) {
+      // console.log("mobile")
+      if (
+        this.position.y + this.velocity.y >=
+        canvas.height - this.radius - 60
+      ) {
+        this.velocity.y = -this.velocity.y / 1.75;
+        this.velocity.x = this.velocity.x * friction;
+      } else {
+        this.velocity.y += gravity;
+      }
+    } else{
+      if (
+        (this.position.y + this.velocity.y >=
+        canvas.height - this.radius - 87 )
+      ) {
+        this.velocity.y = -this.velocity.y / 1.75;
+        this.velocity.x = this.velocity.x * friction;
+      } else {
+        this.velocity.y += gravity;
+      }
     }
   }
 }
 class Goal {
   constructor(position, height, width, color, side) {
     this.position = position;
-    this.height = height;
-    this.width = width;
+    this.height = isMobile() ? height / 2 : height;
+    this.width = isMobile() ? width / 1.25 : width;
     this.color = color;
     this.side = side;
   }
@@ -178,7 +193,7 @@ class Goal {
     ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
     ctx.fill();
     ctx.fillStyle = "white";
-    ctx.fillRect(this.position.x, this.position.y-2, this.width, 15);
+    ctx.fillRect(this.position.x, this.position.y - 2, this.width, 15);
     this.side === "left"
       ? ctx.fillRect(this.position.x, this.position.y, 10, this.height)
       : ctx.fillRect(
@@ -194,13 +209,10 @@ class Goal {
     //   for (let i = 1; i < 20; i++) {
     //     ctx.moveTo(this.position.x + this.width - i * 20, this.position.y);
     //     ctx.lineTo(this.position.x + this.width, this.position.y + i * 20);
-        
+
     //   }
     // }
-    
 
-    
     // ctx.stroke();
-
   }
 }

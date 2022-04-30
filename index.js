@@ -6,16 +6,28 @@ const startModal = document.querySelector("#startModal");
 const restartButton = document.querySelector("#restartGame");
 const goalNotification = document.querySelector("#goal");
 const goalAnimation = document.querySelector(".goal");
-const titleElement = document.querySelector("#title")
+const titleElement = document.querySelector("#title");
+const mobileTouchToStart = document.querySelector("#mobileStart");
 
+const scoreElement = document.querySelector("#score");
 const player1ScoreElement = document.querySelector("#player1Score");
 const player2ScoreElement = document.querySelector("#player2Score");
 const resultElement = document.querySelector("#result");
 
 canvas.width = 1200;
 canvas.height = 776;
+
+function isMobile() {
+  return getComputedStyle(startModal).display !== "flex" &&innerHeight<500;
+}
+if (isMobile()) {
+  mobileTouchToStart.style.display = "flex";
+  canvas.height = 390;
+  canvas.width = 844;
+}
 const gravity = 0.8;
 const friction = 0.825;
+
 const keys = {
   a: {
     pressed: false,
@@ -38,7 +50,9 @@ const keys = {
 };
 const background = new Sprite({
   position: { x: 0, y: 0 },
-  imgSrc: "./assets/Background.png",
+  imgSrc: !isMobile()
+    ? "./assets/Background.png"
+    : "./assets/mobile-background.png",
 });
 const player1 = new Player({
   position: { x: 75, y: 0 },
@@ -48,7 +62,7 @@ const player1 = new Player({
   scale: 2.5,
   offset: {
     x: 5,
-    y: 3,
+    y: isMobile() ? -16 : 3,
   },
   sprites: {
     idle: {
@@ -73,7 +87,7 @@ const player2 = new Player({
   scale: 2.5,
   offset: {
     x: 11,
-    y: 3,
+    y: isMobile() ? -16 : 3,
   },
   sprites: {
     idle: {
@@ -95,19 +109,23 @@ const ball = new Ball({ x: canvas.width / 2, y: 0 }, 30, "white", {
   y: 0,
 });
 const leftGoal = new Goal(
-  { x: 0, y: canvas.height - 309 },
+  { x: 0, y: isMobile() ? canvas.height - 171 : canvas.height - 309 },
   225,
   100,
   "#10B981",
   "left"
 );
 const rightGoal = new Goal(
-  { x: canvas.width - 100, y: canvas.height - 309 },
+  {
+    x: isMobile() ? canvas.width - 80 : canvas.width - 100,
+    y: isMobile() ? canvas.height - 171 : canvas.height - 309,
+  },
   225,
   100,
   "#10B981",
   "right"
 );
+const crossbarOffset = isMobile() ? 130 : 295;
 let player1Score = 0;
 let player2Score = 0;
 
@@ -126,12 +144,12 @@ function resetGame() {
   player2Score = 0;
   player1ScoreElement.innerHTML = player1Score;
   player2ScoreElement.innerHTML = player2Score;
-  restartButton.style.display = "none"
-  resultElement.style.display = "none"
-  gameState = "play"
+  restartButton.style.display = "none";
+  resultElement.style.display = "none";
+  gameState = "play";
   resetAfterScore();
 }
-let gameState;
+let gameState = "start";
 let animationId;
 function animate() {
   animationId = requestAnimationFrame(animate);
@@ -161,28 +179,55 @@ function animate() {
     }
 
     //player2 (cpu) movement
-    if (
-      ball.position.x > canvas.width / 2 &&
-      ball.position.x < player2.position.x - player2.width
-    ) {
-      player2.velocity.x = -10;
-      player2.switchSprite("run");
-    } else if (
-      ball.position.x >= canvas.width / 2 &&
-      ball.position.x > player2.position.x
-    ) {
-      player2.velocity.x = 10;
-      player2.switchSprite("run");
+    if (!isMobile()) {
+      if (
+        ball.position.x > canvas.width / 2 &&
+        ball.position.x < player2.position.x - player2.width
+      ) {
+        player2.velocity.x = -10;
+        player2.switchSprite("run");
+      } else if (
+        ball.position.x >= canvas.width / 2 &&
+        ball.position.x > player2.position.x
+      ) {
+        player2.velocity.x = 10;
+        player2.switchSprite("run");
+      } else {
+        player2.velocity.x = 0;
+        player2.switchSprite("idle");
+      }
+      if (
+        ball.position.y <= player2.position.y &&
+        ball.velocity.x > 0 &&
+        ball.position.x > canvas.width / 2 + player2.width
+      ) {
+        player2.velocity.y = -15;
+      }
     } else {
-      player2.velocity.x = 0;
-      player2.switchSprite("idle");
-    }
-    if (
-      ball.position.y <= player2.position.y &&
-      ball.velocity.x > 0 &&
-      ball.position.x > canvas.width / 2 + player2.width
-    ) {
-      player2.velocity.y = -15;
+      if (
+        ball.position.x > canvas.width / 1.75 &&
+        ball.position.x < player2.position.x - player2.width
+      ) {
+        player2.velocity.x = -10;
+        player2.switchSprite("run");
+      } else if (
+        ball.position.x >= canvas.width / 1.75 &&
+        ball.position.x > player2.position.x &&
+        player2.position < canvas.width
+      ) {
+        player2.velocity.x = 10;
+        player2.switchSprite("run");
+      } else {
+        player2.velocity.x = 0;
+        player2.switchSprite("idle");
+      }
+      if (
+        ball.position.y <= player2.position.y &&
+        ball.velocity.x > 0 &&
+        ball.position.x > canvas.width / 2 + player2.width
+      ) {
+        player2.velocity.y = -10;
+      }
     }
 
     // uncomment to test player 2 physics/animation manually
@@ -248,13 +293,13 @@ function animate() {
   //player 1 goal
   if (
     rectangleCircleCollison({ circle: ball, rectangle: leftGoal }) &&
-    ball.position.y + ball.radius <= leftGoal.height + 295
+    ball.position.y + ball.radius <= leftGoal.height + crossbarOffset
   ) {
     ball.velocity.y = randomFactor > 0.5 ? highBall : lowBall;
     ball.velocity.x = -ball.velocity.x;
   } else if (
     rectangleCircleCollison({ circle: ball, rectangle: leftGoal }) &&
-    ball.position.x - ball.radius * 2 < leftGoal.position.x
+    ball.position.x - ball.radius * 2 < leftGoal.position.x + ball.radius
   ) {
     player2Score++;
     player2ScoreElement.innerHTML = player2Score;
@@ -276,7 +321,7 @@ function animate() {
   //player 2 goal
   if (
     rectangleCircleCollison({ circle: ball, rectangle: rightGoal }) &&
-    ball.position.y + ball.radius <= rightGoal.height + 280
+    ball.position.y + ball.radius <= rightGoal.height + crossbarOffset
   ) {
     ball.velocity.y = randomFactor > 0.5 ? highBall : lowBall;
     ball.velocity.x = -ball.velocity.x;
@@ -307,14 +352,27 @@ function animate() {
     ball.position.x + ball.radius < 0
   ) {
     ball.velocity.x = -ball.velocity.x;
+  } else if (ball.position.y + ball.velocity.y < 0) {
+    ball.velocity.y = -ball.velocity.y;
   }
 }
 animate();
+
 startButton.addEventListener("click", () => {
+  scoreElement.style.display = "flex";
   startModal.style.display = "none";
-  titleElement.classList.add("title")
+  titleElement.classList.add("title");
   gameState = "play";
   ball.velocity.y = -20;
+});
+window.addEventListener("touchstart", () => {
+  if (gameState !== "play") {
+    scoreElement.style.display = "flex";
+    mobileTouchToStart.style.display = "none";
+    titleElement.classList.add("title");
+    gameState = "play";
+    ball.velocity.y = -20;
+  }
 });
 restartButton.addEventListener("click", () => {
   resetGame();
@@ -323,10 +381,12 @@ goalAnimation.addEventListener("animationend", () => {
   goalNotification.style.display = "none";
   goalNotification.classList.remove("goal");
 });
-titleElement.addEventListener("animationend",()=>{
-    titleElement.style.display = "none"
-    titleElement.classList.remove("title")
-})
+titleElement.addEventListener("animationend", () => {
+  titleElement.style.display = "none";
+  titleElement.classList.remove("title");
+  scoreElement.classList.add("score");
+  //   scoreElement.style.display = "flex"
+});
 window.addEventListener("keydown", (event) => {
   switch (event.key) {
     case "d":
