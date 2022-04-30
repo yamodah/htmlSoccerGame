@@ -184,7 +184,7 @@ function animate() {
       player1.velocity.x = 0;
       player1.switchSprite("idle");
     }
-
+  }
     //player2 (cpu) movement
     if (!isMobile()) {
       if (
@@ -256,7 +256,7 @@ function animate() {
       player2.velocity.x = 0;
     }
   */
-  }
+
 
   //Circle collision detection
 
@@ -368,20 +368,20 @@ function handleMobileTouches(e) {
     console.log(e.touches[0].pageX)
   if (gameState === "play") {
     if (
-      e.touches[0].pageX > canvas.width / 2 &&
+        (e.touches[0].pageX || e.touches[1].pageX) > canvas.width / 2 &&
       player1.position.x >= 0
     ) {
       player1.velocity.x = 10;
       player1.switchSprite("run");
     } 
     if (
-      e.touches[0].pageX < canvas.width / 2 &&
+        (e.touches[0].pageX || e.touches[1].pageX) < canvas.width / 2 &&
       player1.position.x + player1.width <= canvas.width 
     ) {
       player1.velocity.x = -10;
       player1.switchSprite("run");
     } 
-    
+
     if (
       (e.touches[0].pageY || e.touches[1].pageY) <= canvas.height / 2 &&
       player1.position.y > canvas.height / 2
