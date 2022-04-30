@@ -369,17 +369,17 @@ function animate() {
   }
 }
 function handleMobileTouches(e) {
-  console.log(e.touches);
+  console.log(e.touches[0].screenX, e.touches[0].pageX);
   if (gameState === "play") {
     if (
-      (e.touches[0].pageX || e.touches[1].pageX ) > canvas.width / 2 &&
+      (e.touches[0].screenX || e.touches[1]?.screenX ) > canvas.width / 2 &&
       player1.position.x - leftGoal.width<= canvas.width
     ) {
       player1.velocity.x = 10;
       player1.switchSprite("run");
     }
     if (
-      (e.touches[0].pageX || e.touches[1].pageX) < canvas.width / 2 &&
+      (e.touches[0].screenX || e.touches[1]?.screenX) < canvas.width / 2 &&
       player1.position.x + player1.width +leftGoal.width >= 0
     ) {
       player1.velocity.x = -10;
@@ -387,7 +387,7 @@ function handleMobileTouches(e) {
     }
 
     if (
-      (e.touches[0].pageY || e.touches[1].pageY ) <= canvas.height / 2 &&
+      (e.touches[0].screenY || e.touches[1]?.screenY ) <= canvas.height / 2 &&
       player1.position.y > canvas.height / 2
     ) {
       player1.velocity.y = -20;
