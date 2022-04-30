@@ -18,7 +18,7 @@ canvas.width = 1200;
 canvas.height = 776;
 
 function isMobile() {
-  return getComputedStyle(startModal).display !== "flex" && innerHeight < 500;
+  return getComputedStyle(startModal).display !== "flex" || innerHeight < 500;
 }
 if (isMobile()) {
   mobileTouchToStart.style.display = "flex";
