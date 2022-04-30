@@ -173,7 +173,6 @@ class Ball extends Sprite {
         this.velocity.y = -this.velocity.y / 1.75;
         this.velocity.x = this.velocity.x * friction;
       } else {
-        console.log("falling");
         this.velocity.y += gravity;
       }
     } else {
