@@ -365,20 +365,21 @@ function animate() {
   }
 }
 function handleMobileTouches(e) {
+    console.log(e.touches[0].pageX)
   if (gameState === "play") {
     if (
       e.touches[0].pageX > canvas.width / 2 &&
       player1.position.x >= 0 &&
       e.touches[0].pageX >= canvas.height / 2
     ) {
-      player1.velocity.x = -10;
+      player1.velocity.x = 10;
       player1.switchSprite("run");
     } else if (
       e.touches[0].pageX < canvas.width / 2 &&
       player1.position.x + player1.width <= canvas.width &&
       e.touches[0].pageX >= canvas.height / 2
     ) {
-      player1.velocity.x = 10;
+      player1.velocity.x = -10;
       player1.switchSprite("run");
     } else {
       player1.velocity.x = 0;
