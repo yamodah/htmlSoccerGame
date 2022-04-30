@@ -372,14 +372,14 @@ function handleMobileTouches(e) {
   console.log(e.touches);
   if (gameState === "play") {
     if (
-      (e.touches[0].pageX) > canvas.width / 2 &&
+      (e.touches[0].pageX || e.touches[1].pageX ) > canvas.width / 2 &&
       player1.position.x <= canvas.width
     ) {
       player1.velocity.x = 10;
       player1.switchSprite("run");
     }
     if (
-      (e.touches[0].pageX ) < canvas.width / 2 &&
+      (e.touches[0].pageX || e.touches[1].pageX) < canvas.width / 2 &&
       player1.position.x + player1.width >= 0
     ) {
       player1.velocity.x = -10;
@@ -387,7 +387,7 @@ function handleMobileTouches(e) {
     }
 
     if (
-      (e.touches[0].pageY ) <= canvas.height / 2 &&
+      (e.touches[0].pageY || e.touches[1].pageY ) <= canvas.height / 2 &&
       player1.position.y > canvas.height / 2
     ) {
       player1.velocity.y = -20;
