@@ -493,4 +493,9 @@ window.addEventListener("keyup", (event) => {
 });
 window.addEventListener("touchstart",handleMobileTouches,true);
 window.addEventListener("touchmove", handleMobileTouches,true);
-window.addEventListener("touchend", handleMobileTouches, true);
+window.addEventListener("touchend", (e) => {
+  e.preventDefault()
+  e.stopPropagation()
+  player1.switchSprite("idle");
+  player1.velocity.x = 0;
+}, true);
