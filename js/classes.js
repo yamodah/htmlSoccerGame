@@ -7,8 +7,6 @@ class Sprite {
     offset = { x: 0, y: 0 },
   }) {
     this.position = position;
-    this.height = 150;
-    this.width = 50;
     this.image = new Image();
     this.image.src = `${imgSrc}`;
     this.scale = scale;
@@ -88,8 +86,8 @@ class Player extends Sprite {
     // ctx.fillStyle = "rgba(255,255,255,0.15)"
     // ctx.fillRect(this.position.x, this.position.y, this.width, this.height)
 
-    this.position.x += this.velocity.x;
-    this.position.y += this.velocity.y;
+    this.position.x += isMobile() ? this.velocity.x / 1.45 : this.velocity.x;
+    this.position.y += isMobile() ? this.velocity.y / 1.45 : this.velocity.y;
     if (this.position.y + this.height + this.velocity.y >= canvas.height - 84) {
       this.velocity.y = 0;
       this.position.y = canvas.height - 130;
@@ -130,33 +128,44 @@ class Player extends Sprite {
     }
   }
 }
-class Ball {
-  constructor(position, radius, color, velocity) {
+class Ball extends Sprite {
+  constructor({
+    position,
+    radius,
+    color,
+    velocity,
+    imgSrc,
+    scale = 1,
+    framesMax = 1,
+    offset = { x: 0, y: 0 },
+  }) {
+    super({
+      position,
+      imgSrc,
+      scale,
+      framesMax,
+      offset,
+    });
     this.position = position;
     this.radius = isMobile() ? radius / 2 : radius;
     this.color = color;
     this.velocity = velocity;
-  }
-  draw() {
-    ctx.beginPath();
-    ctx.arc(
-      this.position.x,
-      this.position.y,
-      this.radius,
-      0,
-      Math.PI * 2,
-      false
-    );
-    ctx.fillStyle = this.color;
-    ctx.fill();
+    this.image = new Image();
+    this.image.src = `${imgSrc}`;
+    this.scale = scale;
+    this.framesMax = framesMax;
+    this.framesCurrent = 0;
+    this.framesElapsed = 0;
+    this.framesHold = 5;
+    this.offset = offset;
   }
   update() {
     this.draw();
-    this.position.x += isMobile()?this.velocity.x/1.25:this.velocity.x;
-    this.position.y += isMobile()?this.velocity.y/1.25:this.velocity.y;
+
+    this.position.x += isMobile() ? this.velocity.x / 1.45 : this.velocity.x;
+    this.position.y += isMobile() ? this.velocity.y / 1.45 : this.velocity.y;
 
     if (isMobile()) {
-      // console.log("mobile")
       if (
         this.position.y + this.velocity.y >=
         canvas.height - this.radius - 60
@@ -164,12 +173,13 @@ class Ball {
         this.velocity.y = -this.velocity.y / 1.75;
         this.velocity.x = this.velocity.x * friction;
       } else {
+        console.log("falling");
         this.velocity.y += gravity;
       }
-    } else{
+    } else {
       if (
-        (this.position.y + this.velocity.y >=
-        canvas.height - this.radius - 87 )
+        this.position.y + this.velocity.y >=
+        canvas.height - this.radius - 87
       ) {
         this.velocity.y = -this.velocity.y / 1.75;
         this.velocity.x = this.velocity.x * friction;

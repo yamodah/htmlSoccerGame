@@ -18,7 +18,7 @@ canvas.width = 1200;
 canvas.height = 776;
 
 function isMobile() {
-  return getComputedStyle(startModal).display !== "flex" &&innerHeight<500;
+  return getComputedStyle(startModal).display !== "flex" && innerHeight < 500;
 }
 if (isMobile()) {
   mobileTouchToStart.style.display = "flex";
@@ -104,9 +104,16 @@ const player2 = new Player({
     },
   },
 });
-const ball = new Ball({ x: canvas.width / 2, y: 0 }, 30, "white", {
-  x: 0,
-  y: 0,
+const ball = new Ball({
+  position: { x: canvas.width / 2, y: 0 },
+  radius: 30,
+  color: "white",
+  imgSrc: isMobile() ? "./assets/futbol-mobile.png" : "./assets/futbol.png",
+  velocity: { x: 0, y: 0 },
+  offset:{
+      x:isMobile()?15:30,
+      y:isMobile()?15:28
+  }
 });
 const leftGoal = new Goal(
   { x: 0, y: isMobile() ? canvas.height - 171 : canvas.height - 309 },
@@ -286,6 +293,7 @@ function animate() {
     } else {
       ball.velocity.x = randomFactor > 0.5 ? -fastBall : -slowBall;
       ball.velocity.y = randomFactor > 0.5 ? highBall : lowBall;
+
     }
   }
 
