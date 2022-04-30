@@ -6,6 +6,7 @@ const startModal = document.querySelector("#startModal");
 const restartButton = document.querySelector("#restartGame");
 const goalNotification = document.querySelector("#goal");
 const goalAnimation = document.querySelector(".goal");
+const titleElement = document.querySelector("#title")
 
 const player1ScoreElement = document.querySelector("#player1Score");
 const player2ScoreElement = document.querySelector("#player2Score");
@@ -311,6 +312,7 @@ function animate() {
 animate();
 startButton.addEventListener("click", () => {
   startModal.style.display = "none";
+  titleElement.classList.add("title")
   gameState = "play";
   ball.velocity.y = -20;
 });
@@ -321,6 +323,10 @@ goalAnimation.addEventListener("animationend", () => {
   goalNotification.style.display = "none";
   goalNotification.classList.remove("goal");
 });
+titleElement.addEventListener("animationend",()=>{
+    titleElement.style.display = "none"
+    titleElement.classList.remove("title")
+})
 window.addEventListener("keydown", (event) => {
   switch (event.key) {
     case "d":

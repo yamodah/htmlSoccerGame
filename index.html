@@ -26,9 +26,21 @@
           margin-left: 150%;
         }
       }
+      @keyframes fadeOut {
+        from {
+          opacity: 1;
+        }
+        to {
+          opacity: 0;
+        }
+      }
       .goal {
         animation-duration: 2s;
         animation-name: slidein;
+      }
+      .title{
+        animation-duration: 4s;
+        animation-name: fadeOut;
       }
     </style>
   </head>
