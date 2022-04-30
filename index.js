@@ -367,13 +367,13 @@ function animate() {
 function handleMobileTouches(e) {
   if (gameState === "play") {
     if (
-      (e.touches[0].pageX || e.touches[1].pageX) > player1.position.x &&
+      (e.touches[0].pageX || e.touches[1].pageX) < player1.position.x &&
       player1.position.x >= 0
     ) {
       player1.velocity.x = -10;
       player1.switchSprite("run");
     } else if (
-      (e.touches[0].pageX || e.touches[1].pageX) > player1.position.x &&
+      (e.touches[0].pageX || e.touches[1].pageX) < player1.position.x &&
       player1.position.x + player1.width <= canvas.width
     ) {
       player1.velocity.x = 10;
@@ -485,4 +485,8 @@ window.addEventListener("keyup", (event) => {
 });
 window.addEventListener("touchstart", (e) => {
   handleMobileTouches(e);
+});
+window.addEventListener("touchend", (e) => {
+  player1.velocity.x = 0;
+  player1.switchSprite("idle");
 });
