@@ -110,7 +110,7 @@
         -o-user-select: none;
         user-select: none;
       }
-      .joyContainer{
+      .joyContainer {
         display: none;
       }
       @media screen and (max-width: 1000px) {
@@ -126,17 +126,28 @@
         .goal {
           margin-top: 8rem;
         }
-        .joyContainer{
+        .joyContainer {
           display: flex;
+        }
+      }
+      @media all and (orientation: portrait) {
+        .score {
+          border:none;
+        }
+        .titleStyle{
+          font-size: large;
+        }
+        .mobileStart{
+          font-size: large;
         }
       }
     </style>
   </head>
-  
-  <body unselectable="on" >
+
+  <body unselectable="on">
     <div style="position: relative; display: inline-block">
       <div
-      style="
+        style="
           position: absolute;
           display: flex;
           width: 100%;
@@ -145,12 +156,12 @@
           justify-content: center;
           padding-top: 20px;
           flex-direction: column;
-          "
+        "
       >
-      <!-- score -->
-      <div
-      id="score"
-      style="
+        <!-- score -->
+        <div
+          id="score"
+          style="
             background-color: #3f3f46;
             color: white;
             width: 25%;
@@ -161,11 +172,11 @@
             flex-shrink: 0;
             border: 4px solid white;
             opacity: 0;
-            "
+          "
         >
-        <h1 id="player1Score" style="padding-right: 10px">0</h1>
-        <h1>-</h1>
-        <h1 id="player2Score" style="padding-left: 10px">0</h1>
+          <h1 id="player1Score" style="padding-right: 10px">0</h1>
+          <h1>-</h1>
+          <h1 id="player2Score" style="padding-left: 10px">0</h1>
         </div>
         <h1 id="goal" style="color: white; display: none" class="goal">
           GOOOAAALLLL
@@ -174,8 +185,8 @@
         <h1 id="mobileStart" class="mobileStart">TOUCH SCREEN TO START</h1>
       </div>
       <div
-      id="result"
-      style="
+        id="result"
+        style="
           position: absolute;
           color: white;
           display: none;
@@ -187,12 +198,12 @@
           bottom: 0;
           text-shadow: 2px 2px black;
           margin-bottom: 5rem;
-          "
+        "
       >
-      <h1>TIE</h1>
-    </div>
-    <div
-    style="
+        <h1>TIE</h1>
+      </div>
+      <div
+        style="
           position: absolute;
           background-color: none;
           display: flex;
@@ -202,44 +213,69 @@
           right: 0;
           left: 0;
           bottom: 0;
-          "
+        "
       >
-      <button
-      id="restartGame"
-      style="padding: 10px; color: black; display: none; margin-top: 75px"
-      >
-      RESTART GAME
-    </button>
-    <div id="startModal" class="controls">
-      <h3>CONTROLS</h3>
-      <div
-      style="display: flex; flex-direction: column; align-items: center"
-      >
-      <p style="text-align: left; padding: 10px; margin-right: 10px">
-        JUMP: W<br />
-        LEFT: A<br />
-        RIGHT:D<br />
-      </p>
-      <button
-      id="startGame"
-      style="
+        <button
+          id="restartGame"
+          style="padding: 10px; color: black; display: none; margin-top: 75px"
+        >
+          RESTART GAME
+        </button>
+        <div id="startModal" class="controls">
+          <h3>CONTROLS</h3>
+          <div
+            style="display: flex; flex-direction: column; align-items: center"
+          >
+            <p style="text-align: left; padding: 10px; margin-right: 10px">
+              JUMP: W<br />
+              LEFT: A<br />
+              RIGHT:D<br />
+            </p>
+            <button
+              id="startGame"
+              style="
                 padding: 10px;
                 color: black;
                 height: 40%;
                 margin-bottom: 10px;
-                "
+              "
             >
-            START GAME
-          </button>
+              START GAME
+            </button>
+          </div>
         </div>
       </div>
+      <div id="joyContainer" class="joyContainer">
+        <div
+          id="joyDiv"
+          style="
+            width: 110px;
+            height: 110px;
+            position: absolute;
+            top: 190px;
+            right: 0;
+            left: -10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          "
+        ></div>
+        <div
+          id="joyDiv2"
+          style="
+            width: 110px;
+            height: 110px;
+            position: absolute;
+            top: 190px;
+            right: -10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          "
+        ></div>
+      </div>
+      <canvas></canvas>
     </div>
-    <div id="joyContainer" class="joyContainer">
-      <div id="joyDiv" style="width:110px;height: 110px;position: absolute; top: 190px; right: 0;left:-10px;display: flex; align-items: center; justify-content: center;" ></div>
-      <div id="joyDiv2" style="width:110px;height: 110px;position: absolute; top: 190px; right: -10px;display: flex; align-items: center; justify-content: center;" ></div>
-    </div>
-    <canvas></canvas>
-  </div>
   </body>
   <script src="joy.js"></script>
   <script src="./js/classes.js"></script>
