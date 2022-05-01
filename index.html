@@ -113,6 +113,18 @@
       .joyContainer {
         display: none;
       }
+      .scoreStyle {
+        background-color: #3f3f4690;
+        color: white;
+        width: 25%;
+        height: 15%;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        border: 4px solid white;
+        opacity: 0;
+      }
       @media screen and (max-width: 1000px) {
         .controls {
           flex-direction: row;
@@ -131,13 +143,16 @@
         }
       }
       @media all and (orientation: portrait) {
-        .score {
-          border:0px;
+        .scoreStyle {
+          border: none;
+          width: 50%;
+          height: 30%;
+          background-color: none;
         }
-        .titleStyle{
+        .titleStyle {
           font-size: large;
         }
-        .mobileStart{
+        .mobileStart {
           font-size: large;
         }
       }
@@ -159,21 +174,7 @@
         "
       >
         <!-- score -->
-        <div
-          id="score"
-          style="
-            background-color: #3f3f46;
-            color: white;
-            width: 25%;
-            height: 15%;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            border: 4px solid white;
-            opacity: 0;
-          "
-        >
+        <div id="score" class="scoreStyle">
           <h1 id="player1Score" style="padding-right: 10px">0</h1>
           <h1>-</h1>
           <h1 id="player2Score" style="padding-left: 10px">0</h1>
