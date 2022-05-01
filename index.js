@@ -150,6 +150,18 @@ const rightGoal = new Goal(
   "#10B981",
   "right"
 );
+const rightNet = new Sprite({
+  position: {
+    x: isMobile() ? canvas.width - 80 : canvas.width - 100,
+    y: isMobile() ? canvas.height - 159 : canvas.height - 295,
+  },
+  imgSrc: !isMobile() ? "./assets/nets/mid-res-net.png" : "./assets/nets/mid-res-mobile-net.png",
+});
+const leftNet = new Sprite({
+  position: {x: 10, y: isMobile() ? canvas.height - 159 : canvas.height - 295 },
+  imgSrc: !isMobile() ? "./assets/nets/mid-res-net.png" : "./assets/nets/mid-res-mobile-net.png",
+});
+
 const crossbarOffset = isMobile() ? 135 : 300;
 let player1Score = 0;
 let player2Score = 0;
@@ -184,6 +196,8 @@ function animate() {
 
   leftGoal.draw();
   rightGoal.draw();
+  rightNet.update();
+  leftNet.update();
   player1.update();
   player2.update();
   ball.update();

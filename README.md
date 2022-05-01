@@ -16,3 +16,7 @@ Itch.io: https://edermunizz.itch.io/
         Game Dev Market: https://www.gamedevmarket.net/member/edermuniz14/
 
         website: https://edermuniz.carrd.co/
+
+joysticks : 
+        the JoyStick Project (https://github.com/bobboteck/JoyStick).
+        Copyright (c) 2015 Roberto D'Amico (Bobboteck).
