@@ -88,11 +88,21 @@ class Player extends Sprite {
 
     this.position.x += isMobile() ? this.velocity.x / 1.45 : this.velocity.x;
     this.position.y += isMobile() ? this.velocity.y / 1.45 : this.velocity.y;
-    if (this.position.y + this.height + this.velocity.y >= canvas.height - 84) {
-      this.velocity.y = 0;
-      this.position.y = canvas.height - 130;
-    } else {
-      this.velocity.y += gravity;
+    
+    if(isMobile()){
+      if (this.position.y + this.height + this.velocity.y >= canvas.height - 60) {
+        this.velocity.y = 0;
+        this.position.y = canvas.height - 110;
+      } else {
+        this.velocity.y += gravity;
+      }
+    }else{
+      if (this.position.y + this.height + this.velocity.y >= canvas.height - 84) {
+        this.velocity.y = 0;
+        this.position.y = canvas.height - 130;
+      } else {
+        this.velocity.y += gravity;
+      }
     }
   }
   switchSprite(sprite) {

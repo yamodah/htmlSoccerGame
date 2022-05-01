@@ -16,6 +16,22 @@ const player1ScoreElement = document.querySelector("#player1Score");
 const player2ScoreElement = document.querySelector("#player2Score");
 const resultElement = document.querySelector("#result");
 
+let leftJoystickDirection;
+let rightJoystickDirection;
+const joyParam = {
+  width: 105,
+  height: 105,
+  internalFillColor: "white",
+  externalStrokeColor: "rgb(156, 163, 175, 0.5)",
+};
+const leftJoystick = new JoyStick("joyDiv", joyParam, function (stickData) {
+  leftJoystickDirection = stickData.cardinalDirection;
+});
+const rightJoystick = new JoyStick("joyDiv2", joyParam, function (stickData) {
+  rightJoystickDirection = stickData.cardinalDirection;
+});
+// console.log("xpositions", leftJoystickDirection, rightJoystickDirection);
+// console.log("xpositions",rightJoystick.yPosition, leftJoystick.yPosition)
 canvas.width = 1200;
 canvas.height = 776;
 
@@ -64,7 +80,7 @@ const player1 = new Player({
   scale: 2.5,
   offset: {
     x: 5,
-    y: isMobile() ? -16 : 3,
+    y: isMobile() ? 0 : 3,
   },
   sprites: {
     idle: {
@@ -89,7 +105,7 @@ const player2 = new Player({
   scale: 2.5,
   offset: {
     x: 11,
-    y: isMobile() ? -16 : 3,
+    y: isMobile() ? 0 : 3,
   },
   sprites: {
     idle: {
@@ -171,22 +187,55 @@ function animate() {
   player1.update();
   player2.update();
   ball.update();
-  if (gameState === "play" && !isMobile()) {
-    if (keys.a.pressed && player1.lastKey === "a" && player1.position.x >= 0) {
-      player1.velocity.x = -10;
-      player1.switchSprite("run");
-    } else if (
-      keys.d.pressed &&
-      player1.lastKey === "d" &&
-      player1.position.x + player1.width <= canvas.width
-    ) {
-      player1.velocity.x = 10;
-      player1.switchSprite("run");
+  if (gameState === "play") {
+    if (!isMobile()) {
+      if (
+        keys.a.pressed &&
+        player1.lastKey === "a" &&
+        player1.position.x >= 0
+      ) {
+        player1.velocity.x = -10;
+        player1.switchSprite("run");
+      } else if (
+        keys.d.pressed &&
+        player1.lastKey === "d" &&
+        player1.position.x + player1.width <= canvas.width
+      ) {
+        player1.velocity.x = 10;
+        player1.switchSprite("run");
+      } else {
+        player1.velocity.x = 0;
+        player1.switchSprite("idle");
+      }
     } else {
-      player1.velocity.x = 0;
-      player1.switchSprite("idle");
+      if (
+        (/W/g.test(leftJoystickDirection) ||
+          /W/g.test(rightJoystickDirection)) &&
+        player1.position.x >= 0
+      ) {
+        player1.velocity.x = -10;
+        player1.switchSprite("run");
+      } else if (
+        (/E/g.test(leftJoystickDirection) ||
+          /E/g.test(rightJoystickDirection)) &&
+        player1.position.x + player1.width <= canvas.width
+      ) {
+        player1.velocity.x = 10;
+        player1.switchSprite("run");
+      } else {
+        player1.velocity.x = 0;
+        player1.switchSprite("idle");
+      }
+      if (
+        (/N/g.test(leftJoystickDirection) ||
+          /N/g.test(rightJoystickDirection)) &&
+        player1.position.y > canvas.height / 2
+      ) {
+        player1.velocity.y = -20;
+      }
     }
   }
+
   if (player1.velocity.x === 0) {
     player1.switchSprite("idle");
   }
@@ -368,36 +417,36 @@ function animate() {
     ball.velocity.y = -ball.velocity.y;
   }
 }
-function handleMobileTouches(e) {
-  
-  if (gameState === "play") {
-    e.preventDefault();
-    e.stopPropagation();
-    if (
-      (e.touches[0].screenX || e.touches[1]?.screenX) > canvas.width / 2 &&
-      player1.position.x + player1.width+100 <= canvas.width
-    ) {
-      player1.velocity.x = 10;
-      player1.switchSprite("run");
-    }else if (
-      (e.touches[0].screenX || e.touches[1]?.screenX) < canvas.width / 2 &&
-      player1.position.x - player1.width-100  >= 0
-    ) {
-      player1.velocity.x = -10;
-      player1.switchSprite("run");
-    }else{
-      player1.switchSprite("idle");
-      player1.velocity.x = 0;
-    }
+// function handleMobileTouches(e) {
 
-    if (
-      (e.touches[0].pageY || e.touches[1]?.pageY) <= canvas.height / 2 &&
-      player1.position.y > canvas.height / 2
-    ) {
-      player1.velocity.y = -20;
-    }
-  }
-}
+//   if (gameState === "play") {
+//     e.preventDefault();
+//     e.stopPropagation();
+//     if (
+//       (e.touches[0].screenX || e.touches[1]?.screenX) > canvas.width / 2 &&
+//       player1.position.x + player1.width+100 <= canvas.width
+//     ) {
+//       player1.velocity.x = 10;
+//       player1.switchSprite("run");
+//     }else if (
+//       (e.touches[0].screenX || e.touches[1]?.screenX) < canvas.width / 2 &&
+//       player1.position.x - player1.width-100  >= 0
+//     ) {
+//       player1.velocity.x = -10;
+//       player1.switchSprite("run");
+//     }else{
+//       player1.switchSprite("idle");
+//       player1.velocity.x = 0;
+//     }
+
+//     if (
+//       (e.touches[0].pageY || e.touches[1]?.pageY) <= canvas.height / 2 &&
+//       player1.position.y > canvas.height / 2
+//     ) {
+//       player1.velocity.y = -20;
+//     }
+//   }
+// }
 animate();
 
 startButton.addEventListener("click", () => {
@@ -491,11 +540,11 @@ window.addEventListener("keyup", (event) => {
       */
   }
 });
-window.addEventListener("touchstart",handleMobileTouches,true);
-window.addEventListener("touchmove", handleMobileTouches,true);
-window.addEventListener("touchend", (e) => {
-  e.preventDefault()
-  e.stopPropagation()
-  player1.switchSprite("idle");
-  player1.velocity.x = 0;
-}, true);
+// window.addEventListener("touchstart",handleMobileTouches,true);
+// window.addEventListener("touchmove", handleMobileTouches,true);
+// window.addEventListener("touchend", (e) => {
+//   e.preventDefault()
+//   e.stopPropagation()
+//   player1.switchSprite("idle");
+//   player1.velocity.x = 0;
+// }, true);
