@@ -3,6 +3,7 @@
 # FORREST FOSSIL FUTBOL
 
 ![Getting Started](./assets/gameScreenGrab.png)
+![Getting Started](./assets/mobile-screenshot.png)
 <br>
 ## A game for those who enjoy soccer/footy/futbol but wondered what it would be like if tiny cute dinosaurs played the world's game. play on your computer or your phone!
 ## https://forrest-fossil-futbol.netlify.app/
