@@ -561,12 +561,4 @@ window.addEventListener("keyup", (event) => {
       */
   }
 });
-// window.addEventListener("touchstart",handleMobileTouches,true);
-window.addEventListener(
-  "touchmove",
-  (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-  },
-  true
-);
+
