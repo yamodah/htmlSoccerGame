@@ -155,11 +155,18 @@ const rightNet = new Sprite({
     x: isMobile() ? canvas.width - 80 : canvas.width - 100,
     y: isMobile() ? canvas.height - 159 : canvas.height - 295,
   },
-  imgSrc: !isMobile() ? "./assets/nets/mid-res-net.png" : "./assets/nets/mid-res-mobile-net.png",
+  imgSrc: !isMobile()
+    ? "./assets/nets/mid-res-net.png"
+    : "./assets/nets/mid-res-mobile-net.png",
 });
 const leftNet = new Sprite({
-  position: {x: 10, y: isMobile() ? canvas.height - 159 : canvas.height - 295 },
-  imgSrc: !isMobile() ? "./assets/nets/mid-res-net.png" : "./assets/nets/mid-res-mobile-net.png",
+  position: {
+    x: 10,
+    y: isMobile() ? canvas.height - 159 : canvas.height - 295,
+  },
+  imgSrc: !isMobile()
+    ? "./assets/nets/mid-res-net.png"
+    : "./assets/nets/mid-res-mobile-net.png",
 });
 
 const crossbarOffset = isMobile() ? 135 : 300;
@@ -555,10 +562,11 @@ window.addEventListener("keyup", (event) => {
   }
 });
 // window.addEventListener("touchstart",handleMobileTouches,true);
-// window.addEventListener("touchmove", handleMobileTouches,true);
-// window.addEventListener("touchend", (e) => {
-//   e.preventDefault()
-//   e.stopPropagation()
-//   player1.switchSprite("idle");
-//   player1.velocity.x = 0;
-// }, true);
+window.addEventListener(
+  "touchmove",
+  (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+  },
+  true
+);
