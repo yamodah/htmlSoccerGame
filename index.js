@@ -438,36 +438,7 @@ function animate() {
     ball.velocity.y = -ball.velocity.y;
   }
 }
-// function handleMobileTouches(e) {
 
-//   if (gameState === "play") {
-//     e.preventDefault();
-//     e.stopPropagation();
-//     if (
-//       (e.touches[0].screenX || e.touches[1]?.screenX) > canvas.width / 2 &&
-//       player1.position.x + player1.width+100 <= canvas.width
-//     ) {
-//       player1.velocity.x = 10;
-//       player1.switchSprite("run");
-//     }else if (
-//       (e.touches[0].screenX || e.touches[1]?.screenX) < canvas.width / 2 &&
-//       player1.position.x - player1.width-100  >= 0
-//     ) {
-//       player1.velocity.x = -10;
-//       player1.switchSprite("run");
-//     }else{
-//       player1.switchSprite("idle");
-//       player1.velocity.x = 0;
-//     }
-
-//     if (
-//       (e.touches[0].pageY || e.touches[1]?.pageY) <= canvas.height / 2 &&
-//       player1.position.y > canvas.height / 2
-//     ) {
-//       player1.velocity.y = -20;
-//     }
-//   }
-// }
 animate();
 
 startButton.addEventListener("click", () => {
