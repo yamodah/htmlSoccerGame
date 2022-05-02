@@ -245,7 +245,7 @@ function animate() {
           /N/g.test(rightJoystickDirection)) &&
         player1.position.y > canvas.height / 2
       ) {
-        player1.velocity.y = -20;
+        player1.velocity.y = -10;
       }
     }
   }
