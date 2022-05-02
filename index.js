@@ -295,7 +295,7 @@ function animate() {
     } else if (
       ball.position.x >= canvas.width / 1.75 &&
       ball.position.x > player2.position.x &&
-      player2.position.x < canvas.width - rightGoal.width - ball.radius * 2
+      player2.position.x < canvas.width - rightGoal.width - ball.radius * 4
     ) {
       player2.velocity.x = 10;
       player2.switchSprite("run");
@@ -306,7 +306,7 @@ function animate() {
     if (
       ball.position.y <= player2.position.y &&
       ball.velocity.x > 0 &&
-      ball.position.x > canvas.width / 2 + player2.width &&
+      ball.position.x > canvas.width / 1.75 + player2.width &&
       player2.position.y > canvas.height / 2
     ) {
       player2.velocity.y = -10;
