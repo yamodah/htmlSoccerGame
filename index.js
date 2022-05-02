@@ -471,7 +471,7 @@ startButton.addEventListener("click", () => {
   ball.velocity.y = -20;
 });
 window.addEventListener("touchstart", () => {
-  if (gameState !== "play") {
+  if (gameState === "start") {
     scoreElement.style.display = "flex";
     mobileTouchToStart.style.display = "none";
     titleElement.classList.add("title");
