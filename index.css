@@ -1,0 +1,161 @@
+* {
+    box-sizing: border-box;
+    font-family: "Press Start 2P", cursive;
+    max-width: 100%;
+    max-height: 100%;
+    text-align: center;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+  }
+  @keyframes slidein {
+    from {
+      margin-left: -100%;
+    }
+    to {
+      margin-left: 200%;
+    }
+  }
+  @keyframes fadeOut {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes blinker {
+    50% {
+      opacity: 0;
+    }
+  }
+  .goal {
+    animation-duration: 2s;
+    animation-name: slidein;
+    position: absolute;
+    top: 0;
+    margin-top: 13rem;
+    text-shadow: 4px 4px #10b981;
+  }
+  .title {
+    animation-duration: 4s;
+    animation-name: fadeOut;
+  }
+  .score {
+    animation: forwards;
+    animation-duration: 2s;
+    animation-name: fadeIn;
+    position: absolute;
+    top: 0;
+    margin-top: 1rem;
+  }
+  .mobileStart {
+    animation: blinker 1s linear infinite;
+    color: white;
+    display: none;
+    justify-content: center;
+  }
+  .titleStyle {
+    color: white;
+    display: flex;
+    position: absolute;
+    justify-content: center;
+    text-shadow: 4px 4px #10b981;
+    padding-top: 2rem;
+    top: 0;
+  }
+  .controls {
+    display: flex;
+    flex-direction: column;
+    color: white;
+    text-shadow: 2px 2px black;
+    align-items: center;
+    border: 2px solid white;
+    padding: 30px;
+    width: 25%;
+    background-color: rgb(30, 41, 59, 0.75);
+  }
+  .canvas {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+  }
+  .joyContainer {
+    display: none;
+  }
+  .scoreStyle {
+    background-color: #3f3f4690;
+    color: white;
+    width: 25%;
+    height: 15%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border: 4px solid white;
+    opacity: 0;
+  }
+  .result {
+    position: absolute;
+    color: white;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    text-shadow: 2px 2px black;
+    margin-bottom: 5rem;
+  }
+  @media screen and (max-width: 1000px) {
+    .controls {
+      flex-direction: row;
+      padding: 10px;
+      margin-top: 45px;
+      display: none;
+    }
+    .titleStyle {
+      padding-top: 1rem;
+    }
+    .goal {
+      margin-top: 8rem;
+    }
+    .joyContainer {
+      display: flex;
+    }
+  }
+  @media all and (orientation: portrait) {
+    .scoreStyle {
+      border: none;
+      width: 50%;
+      height: 30%;
+      background-color: none;
+    }
+    .titleStyle {
+      font-size: large;
+    }
+    .mobileStart {
+      font-size: large;
+    }
+    .result {
+      margin-bottom: 1rem;
+      font-size: medium;
+    }
+  }
